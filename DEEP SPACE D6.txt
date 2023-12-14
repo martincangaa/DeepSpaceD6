@@ -1,0 +1,41 @@
+DEEP SPACE D6
+
+The crew will have numbers assigned to each role that will be treated as  constants
+
+CREW_COMMANDER = 0
+CREW_TACTICAL = 1
+CREW_MEDICAL = 2
+CREW_SCIENCE = 3
+CREW_ENGINEERING = 4
+CREW_SCANNER = 5
+
+crew = [CREW_COMMANDER, CREW_COMANDER, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER]
+
+FUNCTIONALITY.
+
+- die()
+- win()
+- set_difficulty(int n)
+- spawn_thread()
+- set_spawn_power(int power) --> default 
+- get_spawn_power()
+- roll_crew_dice()
+- roll_thread_dice()
+- block_crew_member(int member)
+- unblock_crew_member(int member)
+- attack_enemy(int d)
+- stunt_enemy(int enemy)
+
+THREAD STRUCTURE
+
+The enemy data is contained in various arrays each has a specific data ex:
+
+thread_name = ['Albizu','Max Verstapen']
+dice = [[1,3],[4,5]]
+healht = [1, 7]
+attack = ['8IS', '2NM', '5DS'] (IS = ignore shields, NM = normal mode, DS = destroy shields)
+volatility = [true, false]
+away_mission = [[CREW_ENGINEERING, CREW_ENGINEERING],[none]]
+
+
+
