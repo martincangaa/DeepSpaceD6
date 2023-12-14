@@ -13,15 +13,24 @@ def get_thread():
     # call throw_dice
     pass
 
-
+def game_over():
+    pass
 
 def main():
     difficulty = menu() #loop --> returns difficulty level, prints high scores
+    
+    running = True
     while running:
+        
+        if health <= 0: # kills the game loop if you die
+            running  = False
+
         print_interface() # prints the ship, health, cards, crew
         crew = get_crew()
 
         threads = get_thread()
+    
+    game_over()
 
 
 
