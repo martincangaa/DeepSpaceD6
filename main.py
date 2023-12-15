@@ -13,6 +13,27 @@ def get_crew(crew):
 
 # Prints the game_over screen, maybe the high scores and asks the user if they want to play again
 def game_over():
+    print("""
+         .d8888b.         d8888 888b     d888 8888888888 
+        d88P  Y88b       d88888 8888b   d8888 888        
+        888    888      d88P888 88888b.d88888 888        
+        888            d88P 888 888Y88888P888 8888888    
+        888  88888    d88P  888 888 Y888P 888 888        
+        888    888   d88P   888 888  Y8P  888 888        
+        Y88b  d88P  d8888888888 888   "   888 888        
+         "Y8888P88 d88P     888 888       888 8888888888 
+                                                 
+                                                 
+                                                 
+         .d88888b.  888     888 8888888888 8888888b.     
+        d88P" "Y88b 888     888 888        888   Y88b    
+        888     888 888     888 888        888    888    
+        888     888 Y88b   d88P 8888888    888   d88P    
+        888     888  Y88b d88P  888        8888888P"     
+        888     888   Y88o88P   888        888 T88b      
+        Y88b. .d88P    Y888P    888        888  T88b     
+         "Y88888P"      Y8P     8888888888 888   T88b 
+          """)
     pass
 
 # loop --> returns difficulty level, running = True (when enter is pressed)
@@ -65,6 +86,15 @@ def add_threat(threats, active_threats):
 def check_threats(active_threats):
     pass
 
+def win_game():
+    print("""
+██╗    ██╗██╗███╗   ██╗
+██║    ██║██║████╗  ██║
+██║ █╗ ██║██║██╔██╗ ██║
+██║███╗██║██║██║╚██╗██║
+╚███╔███╔╝██║██║ ╚████║
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝""")
+    pass
 # A throw_dice is called internally, then it loops over the active_functions and checks which ones get activated
 # returns the dice_number to get it printed in the print_interface (this will happen at the start of the next turn)
 def activate_threats(active_threats, crew):
@@ -140,7 +170,7 @@ def main():
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called
     if win:
-        win()
+        win_game()
     else:
         game_over()
 
