@@ -2,54 +2,73 @@ import os
 import keyboard
 import time
 
-def user_input_menu():
-    pass
-
+# throws a dice and returns it's value
 def throw_dice():
     pass
 
-def get_crew():
+# (throw_dice internally)x6 ---> updates the values of the six crewmates (commander, tactical, medical...)
+def get_crew(crew):
     # call throw_dice
     pass 
 
-def get_thread():
-    # call throw_dice call get_spawn_power
-    pass
-
+# Prints the game_over screen, maybe the high scores and asks the user if they want to play again
 def game_over():
     pass
 
+# loop --> returns difficulty level, running = True (when enter is pressed)
 def menu():
     pass
 
+# Prints the whole board: graph for health, graph for shield, crew, active_threats,threat_dice... (Maybe wait for an input from the user to continue,
+# this could be done at the end of the function itself or with another function user_confirmation() after each print_interface()
+# There is an example of this second option after one of the print_interface from the running loop
 def print_interface(health, shield, crew, threads, dice_number):
     pass
 
-def can_be_gathered():
+# Checks if there is at least one crewmate that can be gathered back, returns true or false
+# A crewmate can't be gathered back if it is in the infirmary, it is a scanner or it is assigned to a Distracted threat
+def can_be_gathered(crew):
     pass
 
-def check_dificulty():
+# substracts a number of Don't Panic cards from the threats list (number in canva)
+def check_dificulty(difficulty):
     pass
 
-def gather_crew():
+# Restarts the status of the crewmates that can be gathered back 
+def gather_crew(crew):
     pass
 
+# aux function that can be used to stop the execution of the program until the user decides
+# we will use it if we decide that this approach is better than do it inside the print_interface
 def user_confirmation():
     pass
 
-def check_scanners():
+# counts the number of scanners in the crew, then free three scanners by adding a threat and finally print (add_threat()-->free_scanner()-->print_interface())
+def check_scanners(crew):
+    # METER EN CHECK SCANNER!!
+    # if n_scanners >= 3:
+    #     add_threat(threats, active_threats)
+    #     free_scaner(crew)
+    #     
+    #     print_interface(health, shield, crew, threats, dice_number)
     pass
 
-def assign_crew():
+# COMPLEX FUNCTION,behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
+def assign_crew(crew, active_threats):
     pass
 
-def add_threat():
+# Takes a random threat from threats to active_threats
+def add_threat(threats, active_threats):
     pass
 
-def check_threats():
+# CAUTION, I think we might have not implemented this in the correct way, It's explained in the running loop
+# Behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
+def check_threats(active_threats):
     pass
 
-def activate_threats():
+# A throw_dice is called internally, then it loops over the active_functions and checks which ones get activated
+# returns the dice_number to get it printed in the print_interface (this will happen at the start of the next turn)
+def activate_threats(active_threats, crew):
     pass
 
 # CREW_COMMANDER = 0
@@ -67,48 +86,53 @@ def main():
     crew = []
     threats = []
     active_threats = []
-    n_external_defeated = 0
+    n_external_defeated = 0 # the number of enemies defeated
 
-    difficulty, running = menu() #loop --> returns difficulty level, prints high scores
+    difficulty, running = menu()
     
     check_dificulty(difficulty)
 
     while running:
-
+ 
         print_interface(health, shield, crew, threats, dice_number)
-        time.sleep(3)
 
-        if health <= 0 or can_be_gathered(crew) == False:
-            win = False
-            break
+        time.sleep(3) # in order for the user to see the board before loosing or restarting
+
+        #Conditions to loose
+        if health <= 0 or can_be_gathered(crew) == False: 
+            win = False # determine the screen to be printed after ending the loop (see if-statement out of the loop)
+            break   # get out of the while
 
         gather_crew(crew)
 
         get_crew(crew)
 
         print_interface(health, shield, crew, threats, dice_number)
-        user_confirmation()
+        user_confirmation() # provisional
 
         check_scanners(crew)
         
-        # METER EN CHECK SCANNER!!
-        # if n_scanners >= 3:
-        #     add_threat(threats, active_threats)
-        #     free_scaner(crew)
-        #     
-        #     print_interface(health, shield, crew, threats, dice_number)
-        
         print_interface(health, shield, crew, threats, dice_number)
 
-        assign_crew(crew)
+        # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
+        # will check if the active_threats can be solved with any current crewmate, if it is possible to get a crewmate out of the infirmary...
+        # all the available options will be shown to the user when they select a crewmate and then they will be able to choose one, whathever they do will probably have consequences
+        # (crewmate might me blocked when selecting one of it's possible actions for example)
+        assign_crew(crew, active_threats)
 
         print_interface(health, shield, crew, threats, dice_number)
 
+        # checks if enemies have been defeated or missions accomplished, returns the number of enemies defeated in this turn
+        # CAUTION --> Maybe this function should be called inside the assign_crew so that every time a user assigns a crewmate to a mission or attack an enemy it checks  at the moment 
+        # if they have defeated the enemy or accomplished the mission
+        # ALSO --> Maybe the assign_crew should also have some print_interface inside, so that the crewmates get blocked when necessary and the threats dissappear at the moment
+        # Es la 1:23 igual ya no razono pero definitivamente assign_crew va a ser una función 
         n_external_defeated += check_threats(active_threats)
 
+        #Conditions to win
         if n_external_defeated >= 36 or len(threats) == 0:
-            win = True
-            break
+            win = True  # determine the screen to be printed after ending the loop (see if-statement out of the loop)
+            break   # get out of the while
 
         add_threat(threats, active_threats)
 
@@ -116,25 +140,14 @@ def main():
 
         dice_number = activate_threats(active_threats, crew)
 
-    running = False
+    running = False # I think this doesn't really do anything
 
+    # Prints different screens depending on the result of the game
+    # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called
     if win:
         win()
     else:
         game_over()
-
-    #set_spawn_power(2)
-    #
-    #running = True
-    #while running:
-    #    
-    #    if health <= 0: # kills the game loop if you die
-    #        running  = False
-    #
-    #    print_interface(health, shield, crew, threads, dice_number) # prints the ship, health, cards, crew
-    #    crew = get_crew()
-    #
-    #    threads, dice_number = get_thread()
 
 if __name__ == "__main__":
     main()
