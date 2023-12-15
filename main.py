@@ -61,8 +61,7 @@ def assign_crew(crew, active_threats):
 def add_threat(threats, active_threats):
     pass
 
-# CAUTION, I think we might have not implemented this in the correct way, It's explained in the running loop
-# Behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
+# checks if enemies have been defeated or missions accomplished, returns the number of enemies defeated in this turn
 def check_threats(active_threats):
     pass
 
@@ -119,15 +118,11 @@ def main():
         # all the available options will be shown to the user when they select a crewmate and then they will be able to choose one, whathever they do will probably have consequences
         # (crewmate might me blocked when selecting one of it's possible actions for example)
         assign_crew(crew, active_threats)
-
-        print_interface(health, shield, crew, threats, dice_number)
-
-        # checks if enemies have been defeated or missions accomplished, returns the number of enemies defeated in this turn
-        # CAUTION --> Maybe this function should be called inside the assign_crew so that every time a user assigns a crewmate to a mission or attack an enemy it checks  at the moment 
-        # if they have defeated the enemy or accomplished the mission
-        # ALSO --> Maybe the assign_crew should also have some print_interface inside, so that the crewmates get blocked when necessary and the threats dissappear at the moment
-        # Es la 1:23 igual ya no razono pero definitivamente assign_crew va a ser una función 
-        n_external_defeated += check_threats(active_threats)
+        # |
+        # |-> 
+            # for every repetition inside the assign_crew we will use at least this:
+            # n_external_defeated += check_threats(active_threats)
+            # print_interface
 
         #Conditions to win
         if n_external_defeated >= 36 or len(threats) == 0:
