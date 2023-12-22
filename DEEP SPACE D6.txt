@@ -8,6 +8,7 @@ CREW_MEDICAL = 2
 CREW_SCIENCE = 3
 CREW_ENGINEERING = 4
 CREW_SCANNER = 5
+ALL_CREW_
 
 crew = [CREW_COMMANDER, CREW_COMANDER, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER]
 
@@ -28,14 +29,14 @@ FUNCTIONALITY.
 
 THREAD STRUCTURE
 
-The enemy data is contained in various arrays each has a specific data ex:
+The enemy data is contained in an array of dictionaries each dictionary is a specific enemy:
+
+thread = [{'name': 'Albizu', 'dice_numbers': [2,7], 'health': 4, 'attack': '8IS', 'volatility': True, 'crew_assignable': [CREW_COMANDER, CREW_COMMANDER], 'crew_assigned': [], '' 
+    },{}...]
 
 thread_name = ['Albizu','Max Verstapen']
 dice = [[1,3],[4,5]]
-healht = [1, 7]
+health = [1, 7]
 attack = ['8IS', '2NM', '5DS'] (IS = ignore shields, NM = normal mode, DS = destroy shields)
 volatility = [true, false]
 away_mission = [[CREW_ENGINEERING, CREW_ENGINEERING],[none]]
-
-
-
