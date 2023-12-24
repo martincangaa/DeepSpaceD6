@@ -30,8 +30,8 @@ THREAD STRUCTURE
 
 The enemy data is contained in an array of dictionaries each dictionary acts as an specific thread:
 
-thread = [{'name': 'Albizu', 'description': 'Just Albizu, tbh he got tha drip', 'dice_numbers': [2,7], 'health': 4, 'attack': '8IS', 'volatility': True, 'assignable_crew': [CREW_COMANDER, CREW_COMMANDER], 'assigned_crew': [],
-    'block_till_complete': [], 'send_infirmary': True, 'mercenary': True, 'existentialism': [True, CREW_COMANDER], 'return_scaner': True},{}...]
+thread = [{'name': 'Albizu', 'description': 'Just Albizu, tbh he be bussin', 'dice_numbers': [2,7], 'health': 4, 'attack': '8IS', 'volatility': True, 'assignable_crew': [CREW_COMANDER, CREW_COMMANDER], 'assigned_crew': [],
+    'block_till_complete': [], 'send_infirmary': True, 'mercenary': True, 'existentialism': [True, CREW_COMANDER], 'return_scaner': True},'stunt': False, 'tactical_to_infirmary': False]
 
 KEY EXPLANATION:
 
@@ -43,7 +43,7 @@ KEY EXPLANATION:
 
     health = health of the thread (ex. 4)
 
-    attack = damage of the thread to the ship (ex. '8IS') 
+    attack = string with the damage of the thread to the ship (ex. '8IS') 
 
         types of damage:
 
@@ -53,7 +53,7 @@ KEY EXPLANATION:
 
             DS = destroy all shields
 
-    volatility = if the thread is volatile it will last only one turn and then it will be destroyed (ex. True)
+    volatility = if the thread, when activated, only lasts one turn and then is discarded, volatility is True
 
     assignable_crew = crew members that can be assigned to the thread in order to disable it (ex. [CREW_COMANDER, CREW_COMMANDER])
 
@@ -63,7 +63,11 @@ KEY EXPLANATION:
 
     send_infirmary = if the thread is activated it will send a random crew member to the infirmary (ex. True)
 
+    'mercenary' = special card in the game
+
     existentialism = this thread must be completed before assigning any other (ex. CREW_COMANDER) if you try to assign it to something else it will be blocked (ex. [True, CREW_COMANDER])
 
         [True, CREW_COMANDER] --> The True means that the thread is existential and CREW_COMANDER is the crew member 
         that will be blocked if the assignable_crew does not match with the crew_assigned
+    
+    'stunt
