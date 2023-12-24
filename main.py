@@ -117,11 +117,11 @@ def main():
     active_threats = []
     n_external_defeated = 0 # the number of enemies defeated
 
-    difficulty, running = menu()
+    difficulty = menu()
     
     check_dificulty(difficulty)
 
-    while running:
+    while True:
  
         print_interface(health, shield, crew, threats, dice_number)
 
@@ -164,8 +164,6 @@ def main():
         print_interface(health, shield, crew, threats, dice_number)
 
         dice_number = activate_threats(active_threats, crew)
-
-    running = False # I think this doesn't really do anything
 
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called
