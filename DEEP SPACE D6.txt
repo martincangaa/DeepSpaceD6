@@ -31,7 +31,7 @@ THREAD STRUCTURE
 The enemy data is contained in an array of dictionaries each dictionary acts as an specific thread:
 
 thread = [{'name': 'Albizu', 'description': 'Just Albizu, tbh he be bussin', 'dice_numbers': [2,7], 'health': 4, 'attack': '8IS', 'volatility': True, 'assignable_crew': [CREW_COMANDER, CREW_COMMANDER], 'assigned_crew': [],
-    'block_till_complete': [], 'send_infirmary': True, 'mercenary': True, 'existentialism': [True, CREW_COMANDER], 'return_scaner': True},'stunt': False, 'tactical_to_infirmary': False]
+    'block_till_complete': [], 'send_infirmary': True, 'mercenary': True, 'existentialism': [True, CREW_COMANDER], 'return_scaner': True},'stun': False, 'tactical_to_infirmary': False]
 
 KEY EXPLANATION:
 
@@ -70,4 +70,6 @@ KEY EXPLANATION:
         [True, CREW_COMANDER] --> The True means that the thread is existential and CREW_COMANDER is the crew member 
         that will be blocked if the assignable_crew does not match with the crew_assigned
     
-    'stunt
+    stun = CREW_SCIENCE is able to stun threats, this option is just to update the status
+
+    tactical_to_infirmary = boolean specifically created for friendly_fire
