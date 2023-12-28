@@ -1,5 +1,6 @@
 import random
 import keyboard
+import os
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -39,7 +40,40 @@ def gather_crew(crew):
             crew_to_roll += 1
     return crew_to_roll
 
-def show_options(crewmember, crew, active_threats, message):
+def clear_terminal():
+    """
+    Clears the terminal screen.
+    """
+    # Check the operating system
+    if os.name == 'nt': # Windows
+        os.system('cls')
+    else: # Linux or Mac
+        os.system('clear')
+
+def change_face(crewmember):
+    
+    crewmember_copy = crewmember.copy()
+    print('Choose into what you want to change the crewmember to: \n\n1) Tactical\n2) Medical\n3) Scientific\n4) Engineer')
+    
+    while True:
+        if keyboard.is_pressed('1'):
+            crewmember_copy['crew_type'] = CREW_TACTICAL
+            break
+        if keyboard.is_pressed('2'):
+            crewmember_copy['crew_type'] = CREW_MEDICAL
+            break
+        if keyboard.is_pressed('3'):
+            crewmember_copy['crew_type'] = CREW_SCIENCE
+            break
+        if keyboard.is_pressed('4'):
+            crewmember_copy['crew_type'] = CREW_ENGINEERING
+            break
+        else:
+            print('Choose a valid option')
+    
+    return crewmember_copy
+
+def show_options(crewmember, crew, active_threats):
     """
     Displays options for a crewmember based on their crew type.
     
@@ -52,10 +86,80 @@ def show_options(crewmember, crew, active_threats, message):
     Returns:
         str: The updated message after displaying options.
     """
+    crew_copy = crew.copy()
+
     if crewmember['crew_type'] == CREW_COMMANDER:
-        message += 'COMMANDER options: \n\n1) Change face of any dice.\n\n2) Reroll dices'
+        
+        clear_terminal()
+        message_options = 'COMMANDER options: (Press *C* to exit the menu) \n\n1) Change face of any dice.\n\n2) Reroll dices\n'
+
+        print(message_options)
+
         while not keyboard.is_pressed('c'):
-            key_pressed = False
+
+            if keyboard.is_pressed('1') and not key_pressed:
+
+                crew_options = crew_status(crew)
+                print(crew_options)
+                print('Select the crew member you want to change the face of the dice.\n')
+
+                while True:
+                    if keyboard.is_pressed('1'):
+                        if crew_copy[0]['blocked'] == False and crew_copy[0]['infirmary'] == False:
+                            crew_copy[0] = change_face(crew_copy[0])
+                            break
+                        else:
+                            print('Choose a valid option')
+                    
+                    if keyboard.is_pressed('2'):
+                        if crew_copy[1]['blocked'] == False and crew_copy[1]['infirmary'] == False:
+                            crew_copy[1] = change_face(crew_copy[1])
+                            break
+                        else:
+                            print('Choose a valid option')
+
+                    if keyboard.is_pressed('3'):
+                        if crew_copy[2]['blocked'] == False and crew_copy[2]['infirmary'] == False:
+                            crew_copy[2] = change_face(crew_copy[2])
+                            break
+                        else:
+                            print('Choose a valid option')
+                    
+                    if keyboard.is_pressed('4'):
+                        if crew_copy[3]['blocked'] == False and crew_copy[3]['infirmary'] == False:
+                            crew_copy[3] = change_face(crew_copy[3])
+                            break
+                        else:
+                            print('Choose a valid option')
+                    
+                    if keyboard.is_pressed('5'):
+                        if crew_copy[4]['blocked'] == False and crew_copy[4]['infirmary'] == False:
+                            crew_copy[4] = change_face(crew_copy[4])
+                            break
+                        else:
+                            print('Choose a valid option')
+                    
+                    if keyboard.is_pressed('6'):
+                        if crew_copy[5]['blocked'] == False and crew_copy[5]['infirmary'] == False:
+                            crew_copy[5] = change_face(crew_copy[5])
+                            break
+                        else:
+                            print('Choose a valid option')
+
+                key_pressed = True
+                break
+
+            
+            if keyboard.is_pressed('2') and not key_pressed:
+                
+                # I guess this is the part where we reroll the dices using get crew which hopefully will return the crew_copy with the changes made
+
+                key_pressed = True
+                break
+            else:
+                key_pressed = False
+
+
     if crewmember['crew_type'] == CREW_TACTICAL:
         pass
     if crewmember['crew_type'] == CREW_MEDICAL:
@@ -79,19 +183,17 @@ def crew_status(crew):
     """
 
     crew_names = ['COMMANDER', 'TACTICAL', 'MEDICAL', 'SCIENCE', 'ENGINEER', 'SCANNER']
-    active_crew = []
 
     message = ''
 
     for crewmate in crew:
 
-        if crewmate['blocked'] == False:
+        if crewmate['blocked'] == False and crewmate['infirmary'] == False:
             # looking for the unblocked crewmates to add them to the message and to an array of active crew
             for i in range(len(crew_names)):
                 if i == crewmate['crew_type']:
                     message += crew_names[i] + ' (' + i + ')   '
-                    active_crew.append(crewmate)
-        
+
         if crewmate['blocked'] == True:
             # looking for the blocked crewmates and adding them to the message indicating they are doing some stuff
             for i in range(len(crew_names)):
@@ -104,7 +206,7 @@ def crew_status(crew):
                 if i == crewmate['crew_type']:
                     message += crew_names[i] + ' (INFIRMARY)   '
         
-    return active_crew, message
+    return message
 
 # COMPLEX FUNCTION,behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
 # Ayuda
@@ -118,51 +220,62 @@ def assign_crew(crew, active_threats, health, shield):
         health (int): Current health value.
         shield (int): Current shield value.
     """
-    active_crew, message = crew_status(crew)
-    
+    crew_copy = crew.copy()
+    message = crew_status(crew_copy)
+
     active_threats_copy = active_threats.copy()
 
-    message += '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'
+    message += '\nPress [1,2,3...] respectively to interact with the crew member. (To escape press [c] )\n\n'
     print(message)
 
-    while keyboard.is_pressed('c') == False:
+    while not keyboard.is_pressed('c'):
 
-        key_pressed = False
-
-        if keyboard.is_pressed('1') and key_pressed:
-            try:
-                message = show_options(active_crew[0], crew, active_threats_copy, message)
-            finally:
+        if keyboard.is_pressed('1') and not key_pressed:
+            if crew_copy[0]['blocked'] == False and crew_copy[0]['infirmary'] == False:
+                crew_copy, active_threats_copy = show_options(crew_copy[0], crew_copy, active_threats_copy)
                 key_pressed = True
-        
+            else:
+                print('Choose a valid option')
+                key_pressed = True
+
         if keyboard.is_pressed('2') and key_pressed:
-            try:
-                message = show_options(active_crew[1], active_threats_copy, message)
-            finally:
+            if crew_copy[1]['blocked'] == False and crew_copy[1]['infirmary'] == False:
+                message = show_options(crew[1], crew_copy, active_threats_copy)
+                key_pressed = True
+            else:
+                print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('3') and key_pressed:
-            try:
-                message = show_options(active_crew[2], active_threats_copy, message)
-            finally:
+            if crew_copy[2]['blocked'] == False and crew_copy[2]['infirmary'] == False:
+                message = show_options(crew_copy[2], crew_copy, active_threats_copy)
+                key_pressed = True
+            else:
+                print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('4') and key_pressed:
-            try:
-                message = show_options(active_crew[3], active_threats_copy, message)
-            finally:
+            if crew_copy[3]['blocked'] == False and crew_copy[3]['infirmary'] == False:
+                message = show_options(crew_copy[3], crew_copy, active_threats_copy)
+                key_pressed = True
+            else:
+                print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('5') and key_pressed:
-            try:
-                message = show_options(active_crew[4], active_threats_copy, message)
-            finally:
+            if crew_copy[4]['blocked'] == False and crew_copy[4]['infirmary'] == False:
+                message = show_options(crew_copy[4], crew_copy, active_threats_copy)
+                key_pressed = True
+            else:
+                print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('6') and key_pressed:
-            try:
-                message = show_options(active_crew[5], active_threats_copy, message)
-            finally:
+            if crew_copy[5]['blocked'] == False and crew_copy[5]['infirmary'] == False:
+                message = show_options(crew_copy[5], crew_copy, active_threats_copy)
+                key_pressed = True
+            else:
+                print('Choose a valid option')
                 key_pressed = True
 
         else:
