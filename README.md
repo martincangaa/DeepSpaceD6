@@ -28,10 +28,6 @@ DeepSpaceD6 is a Python-based terminal game that brings the excitement of the bo
 
 10. Enjoy the Game: DeepSpaceD6 offers a challenging and immersive gameplay experience. Enjoy the thrill of space exploration and strategic decision-making as you navigate through the depths of the galaxy.
 
-## Contributing
-
-If you would like to contribute to DeepSpaceD6, please follow the guidelines outlined in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
 ## License
 
 DeepSpaceD6 is licensed under the [MIT License](LICENSE).
