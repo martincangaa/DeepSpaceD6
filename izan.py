@@ -30,7 +30,7 @@ health = 8
 shield = 4
 
 # DONE
-def print_interface(health, shield, dice_number, active_threats, crew, message_to_continue='Press enter to continue', user_confirmation=False):
+def print_interface(health, shield, active_threats, crew, message_to_continue='Press enter to continue',  dice_number='_',user_confirmation=False):
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)

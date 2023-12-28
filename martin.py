@@ -2,6 +2,7 @@ import random
 import keyboard
 import os
 import time
+import izan as zn
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -254,12 +255,12 @@ def crew_status(crew):
         
     return message
 
-def print_assign(crew_copy):
+def print_assign(health, shield, active_threats, crew_copy, message, dice_number=' '):
 
     clear_terminal()
-    # print_interface(health, shield, crew_copy, active_threats_copy, dice_number)
+    zn.print_interface(health, shield, active_threats, crew_copy, message)
     message = crew_status(crew_copy)
-    message += '\nPress [1,2,3...] respectively to interact with the crew member. (To escape press [enter] )\n\n'
+    message += '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'
     print(message)
 
 # COMPLEX FUNCTION,behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
@@ -277,7 +278,7 @@ def assign_crew(crew, active_threats, health, shield):
     crew_copy = crew.copy()
 
     active_threats_copy = active_threats.copy()
-    print_assign(crew_copy)
+    print_assign(health, shield, active_threats_copy, crew_copy, 'Press enter to escape')
 
     key_pressed = False
     
@@ -302,7 +303,7 @@ def assign_crew(crew, active_threats, health, shield):
                     key_pressed = True
                     crew_action_1 = True
                     crew_copy, active_threats_copy, health, shield = show_options(crew_copy[0], crew_copy, active_threats_copy, health, shield)
-                    print_assign(crew_copy)
+                    print_assign(health, shield, active_threats_copy, crew_copy, 'Press enter to escape')
 
                 else:
                     print('Choose a valid option')
