@@ -55,7 +55,7 @@ def can_be_gathered(crew):
 def check_dificulty(difficulty):
     pass
 
-# Restarts the status of the crewmates that can be gathered back 
+# Counts the numbers of crewmates in the crew
 def gather_crew(crew):
     pass
 
