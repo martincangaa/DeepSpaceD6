@@ -2,13 +2,13 @@
 import time
 import random
 
-"""CREW_COMMANDER = 0
+CREW_COMMANDER = 0
 CREW_TACTICAL = 1
 CREW_MEDICAL = 2
 CREW_SCIENCE = 3
 CREW_ENGINEERING = 4
 CREW_SCANNER = 5
-
+"""
 crew = [CREW_COMMANDER, CREW_COMANDER, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER]"""
 #add_threat
 #game_over
@@ -176,13 +176,12 @@ def add_threat(active_threats):
 
 
 def get_crew(crew):
-    crew_copy = crew[:]
-    for i in range(len(crew)):
-        for member in crew:
-            if member[i]['infirmary'] == False and member[i]['blocked'] == False:
-                crew_copy[i] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
-    return crew_copy
+    crew_copy = crew.copy()
 
+    for member in crew_copy:
+        if member['infirmary'] == False and member['blocked'] == False:
+                member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
+    return crew_copy
 
 def activate_threats(active_threats,crew, threat):
     throw_dice_result = throw_dice(1)
@@ -319,7 +318,3 @@ def activate_threats(active_threats,crew, threat):
 def activate_threat(active_threats, shield, health):
     for threat in active_threats:
         activate_threats(threat, shield, health)
-
-
-
-                

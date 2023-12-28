@@ -3,6 +3,7 @@ import keyboard
 import os
 import time
 import izan as zn
+import add_threats as at
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -97,6 +98,69 @@ def change_face(crewmember):
             
     return crewmember_copy
 
+def reroll_crew(crew, crewmember):
+    """
+    Rerolls the crew type of a crewmember and updates the crew list accordingly.
+    
+    Args:
+        crew (list): The list of crewmembers.
+        crewmember (dict): The crewmember whose crew type is to be rerolled.
+        
+    Returns:
+        list: The updated list of crewmembers.
+    """
+    crewmember['blocked'] = True
+
+    crew_copy = crew.copy()
+
+    for member in crew_copy:
+        if member['infirmary'] == False and member['blocked'] == False:
+                member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
+    return crew_copy
+
+def assign_crew_threat(crewmember, active_threats, crew, health, shield):
+    """
+    Assigns a crewmember to an active threat and updates the active threats list accordingly.
+    
+    Args:
+        crewmember (dict): The crewmember to be assigned.
+        active_threats (list): List of active threats.
+        crew (list): List of crewmembers.
+        health (int): The current health value.
+        shield (int): The current shield value.
+        
+    Returns:
+        list: The updated list of active threats.
+    """
+    crewmember['blocked'] = True
+    real_index = []
+    fake_index = []
+    assignable_string = ''
+    i = 0
+
+    active_threats_copy = active_threats.copy()
+
+    for threat in active_threats:
+        if len(threat['assigned_crew']) < len(threat['assignable_crew']) and crewmember['crew_type'] in threat['assignable_crew']:
+            
+            i += 1
+            real_index.append(active_threats_copy.index(threat))
+            fake_index.append(i)
+            assignable_string += f"{str(i)}) {threat['name']}\n"
+        
+    #print_assign(health, shield, active_threats_copy, crew, 'Press (↵) to escape')
+    print(f"Select the threat you want to assign the commander to:\n{assignable_string}")
+    
+    while True:
+        input = keyboard.read_event().name
+        
+        if input.isnumeric():
+            if int(input) in fake_index:
+                active_threats_copy[real_index[fake_index.index(int(input))]]['assigned_crew'].append(crewmember['crew_type'])
+                break
+    
+    return active_threats_copy
+
 def show_options(crewmember, crew, active_threats, health, shield):
     """
     Displays options for a crewmember based on their crew type.
@@ -112,12 +176,13 @@ def show_options(crewmember, crew, active_threats, health, shield):
         tuple: A tuple containing the updated crew, active threats, health and shield values.
     """
     crew_copy = crew.copy()
+    active_threats_copy = active_threats.copy()
 
     if crewmember['crew_type'] == CREW_COMMANDER:
         
         clear_terminal()
         print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
-        message_options = 'COMMANDER options: \n\n1) Change face of any dice.\n\n2) Reroll dices\n'
+        message_options = 'COMMANDER options: \n\n1) Change face of any dice.\n\n2) Reroll dices\n\n3) Assign commander\n'
 
         print(message_options)
 
@@ -207,11 +272,18 @@ def show_options(crewmember, crew, active_threats, health, shield):
             elif keyboard.is_pressed('2'):
                 if not key_pressed:
                     key_pressed = True
-
-                    # I guess this is the part where we reroll the dices using get crew which hopefully will return the crew_copy with the changes made
+                    crew_copy = reroll_crew(crew_copy, crewmember)
 
                     break
             
+            elif keyboard.is_pressed('3'):
+                if not key_pressed:
+                    key_pressed = True
+
+                    active_threats_copy = assign_crew_threat(crewmember, active_threats_copy, crew_copy, health, shield)
+
+                    break
+
             elif keyboard.is_pressed('enter'):
                 break
 
