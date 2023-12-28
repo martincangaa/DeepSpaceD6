@@ -30,7 +30,7 @@ health = 8
 shield = 4
 
 # DONE
-def print_interface(health, shield, dice_number, active_threats, crew, user_confirmation=False):
+def print_interface(health, shield, dice_number, active_threats, crew, message_to_continue, user_confirmation=False):
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)
@@ -57,9 +57,9 @@ def print_interface(health, shield, dice_number, active_threats, crew, user_conf
 ║                                                                                               ║
 ║   {active_threats_str}                                                                                            ║
 ║                                                                                               ║
-║   ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐                     .-----------------------.      ║
-║   │ {initials[crew[0]["crew_type"]]} │  │ {initials[crew[1]["crew_type"]]} │  │ {initials[crew[2]["crew_type"]]} │  │ {initials[crew[3]["crew_type"]]} │  │ {initials[crew[4]["crew_type"]]} │  │ {initials[crew[5]["crew_type"]]} │                     |Press enter to continue|      ║
-║   └───┘  └───┘  └───┘  └───┘  └───┘  └───┘                     '-----------------------'      ║
+║   ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐                     {"." + "-"*len(message_to_continue) + "." + " " * (29-len(message_to_continue))}║
+║   │ {initials[crew[0]["crew_type"]]} │  │ {initials[crew[1]["crew_type"]]} │  │ {initials[crew[2]["crew_type"]]} │  │ {initials[crew[3]["crew_type"]]} │  │ {initials[crew[4]["crew_type"]]} │  │ {initials[crew[5]["crew_type"]]} │                     |{message_to_continue}|{" " * (29-len(message_to_continue))}║
+║   └───┘  └───┘  └───┘  └───┘  └───┘  └───┘                     {"'" + "-"*len(message_to_continue) + "'" + " " * (29-len(message_to_continue))}║
 ║     {"F" if not crew[0]["blocked"] and not crew[0]["infirmary"] else "I" if crew[0]["infirmary"] else "B"}      {"F" if not crew[1]["blocked"] and not crew[1]["infirmary"] else "I" if crew[1]["infirmary"] else "B"}      {"F" if not crew[2]["blocked"] and not crew[2]["infirmary"] else "I" if crew[2]["infirmary"] else "B"}      {"F" if not crew[3]["blocked"] and not crew[3]["infirmary"] else "I" if crew[3]["infirmary"] else "B"}      {"F" if not crew[4]["blocked"] and not crew[4]["infirmary"] else "I" if crew[4]["infirmary"] else "B"}      {"F" if not crew[5]["blocked"] and not crew[5]["infirmary"] else "I" if crew[5]["infirmary"] else "B"}                                                      ║
 ║                                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝         
@@ -80,7 +80,7 @@ def check_scanners(crew):
         n_of_scanners= free_scanners(crew, n_of_scanners)
         
         
-    print_interface(health, shield, 6, threats, crew)
+    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
 
 # DONE
 def free_scanners(crew, n_of_scanners):
@@ -125,7 +125,7 @@ def add_threat(active_threats, threats):
 def main():
     #new_threats = check_difficulty("3")
     #print(new_threats)
-    print_interface(health, shield, 6, threats, crew)
+    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
     check_scanners(crew)
 
 if __name__ == "__main__":
