@@ -106,7 +106,8 @@ def show_options(crewmember, crew, active_threats, health, shield):
     if crewmember['crew_type'] == CREW_COMMANDER:
         
         clear_terminal()
-        message_options = 'COMMANDER options: (Press *enter* to exit the menu) \n\n1) Change face of any dice.\n\n2) Reroll dices\n'
+        print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
+        message_options = 'COMMANDER options: \n\n1) Change face of any dice.\n\n2) Reroll dices\n'
 
         print(message_options)
 
@@ -255,12 +256,12 @@ def crew_status(crew):
         
     return message
 
-def print_assign(health, shield, active_threats, crew_copy, message, dice_number=' '):
+def print_assign(health, shield, active_threats, crew_copy, message_to_continue, dice_number=' ', message_2 = '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'):
 
     clear_terminal()
-    zn.print_interface(health, shield, active_threats, crew_copy, message)
+    zn.print_interface(health, shield, active_threats, crew_copy, message_to_continue)
     message = crew_status(crew_copy)
-    message += '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'
+    message += message_2
     print(message)
 
 # COMPLEX FUNCTION,behaviour described in its appearance in the running loop, I think it's better to understand if you see it there
@@ -278,7 +279,8 @@ def assign_crew(crew, active_threats, health, shield):
     crew_copy = crew.copy()
 
     active_threats_copy = active_threats.copy()
-    print_assign(health, shield, active_threats_copy, crew_copy, 'Press enter to escape')
+
+    print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
 
     key_pressed = False
     
@@ -291,19 +293,20 @@ def assign_crew(crew, active_threats, health, shield):
 
     time.sleep(0.1)
 
-    while not keyboard.is_pressed('c'):
+    while not keyboard.is_pressed('enter'):
 
         if keyboard.is_pressed('1'):
             if not key_pressed:
 
                 if crew_action_1:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[0]['blocked'] == False and crew_copy[0]['infirmary'] == False:
                     key_pressed = True
                     crew_action_1 = True
                     crew_copy, active_threats_copy, health, shield = show_options(crew_copy[0], crew_copy, active_threats_copy, health, shield)
-                    print_assign(health, shield, active_threats_copy, crew_copy, 'Press enter to escape')
+                    print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
 
                 else:
                     print('Choose a valid option')
@@ -313,6 +316,7 @@ def assign_crew(crew, active_threats, health, shield):
             if not key_pressed:
                 
                 if crew_action_2:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[1]['blocked'] == False and crew_copy[1]['infirmary'] == False:
@@ -327,6 +331,7 @@ def assign_crew(crew, active_threats, health, shield):
             if not key_pressed:
                 
                 if crew_action_3:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[2]['blocked'] == False and crew_copy[2]['infirmary'] == False:
@@ -341,6 +346,7 @@ def assign_crew(crew, active_threats, health, shield):
             if not key_pressed:
 
                 if crew_action_4:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[3]['blocked'] == False and crew_copy[3]['infirmary'] == False:
@@ -355,6 +361,7 @@ def assign_crew(crew, active_threats, health, shield):
             if not key_pressed:
 
                 if crew_action_5:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[4]['blocked'] == False and crew_copy[4]['infirmary'] == False:
@@ -369,6 +376,7 @@ def assign_crew(crew, active_threats, health, shield):
             if not key_pressed:
 
                 if crew_action_6:
+                    key_pressed = True
                     print('You have already interacted with this crew member')
 
                 elif crew_copy[5]['blocked'] == False and crew_copy[5]['infirmary'] == False:
@@ -388,14 +396,14 @@ def main():
     """
     # Initialize variables
     health = 8
-    shield = 4
+    shield = 1
     crew = [
         {'crew_type': CREW_COMMANDER, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_TACTICAL, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_MEDICAL, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_SCIENCE, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_ENGINEERING, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_SCANNER, 'blocked': False, 'infirmary': False}]
+        {'crew_type': CREW_SCANNER, 'blocked': True, 'infirmary': False}]
     active_threats = [{'name': 'Hijackers', 'description': '-2 Hull', 'dice_numbers': [4,5], 'health': 4, 'attack': '1NM', 'volatility': False, 'assignable_crew': [0, 0, 1], 
                 'assigned_crew': [], 'block_till_complete': [], 'send_infirmary': False, 'mercenary': False, 'existentialism': [False], 'return_scanner': False, 'stun': False, 'tactical_to_infirmary': False}]
     
