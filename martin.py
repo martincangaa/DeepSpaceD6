@@ -73,18 +73,28 @@ def change_face(crewmember):
 
     while True:
         if keyboard.is_pressed('1'):
-            crewmember_copy['crew_type'] = CREW_TACTICAL
-            break
+            if not key_pressed:
+                key_pressed = True
+                crewmember_copy['crew_type'] = CREW_TACTICAL
+                break
         elif keyboard.is_pressed('2'):
-            crewmember_copy['crew_type'] = CREW_MEDICAL
-            break
+            if not key_pressed:
+                key_pressed = True
+                crewmember_copy['crew_type'] = CREW_MEDICAL
+                break
         elif keyboard.is_pressed('3'):
-            crewmember_copy['crew_type'] = CREW_SCIENCE
-            break
+            if not key_pressed:
+                key_pressed = True
+                crewmember_copy['crew_type'] = CREW_SCIENCE
+                break
         elif keyboard.is_pressed('4'):
-            crewmember_copy['crew_type'] = CREW_ENGINEERING
-            break
-
+            if not key_pressed:
+                key_pressed = True
+                crewmember_copy['crew_type'] = CREW_ENGINEERING
+                break
+        else:
+            key_pressed = False
+            
     return crewmember_copy
 
 def show_options(crewmember, crew, active_threats, health, shield):
