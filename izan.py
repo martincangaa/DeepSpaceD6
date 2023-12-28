@@ -80,7 +80,7 @@ def check_scanners(crew):
         n_of_scanners= free_scanners(crew, n_of_scanners)
         
         
-    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
+    print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
 
 # DONE
 def free_scanners(crew, n_of_scanners):
@@ -125,7 +125,7 @@ def add_threat(active_threats, threats):
 def main():
     #new_threats = check_difficulty("3")
     #print(new_threats)
-    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
+    print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
     check_scanners(crew)
 
 if __name__ == "__main__":
