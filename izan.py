@@ -30,14 +30,17 @@ health = 8
 shield = 4
 
 # DONE
-def print_interface(health, shield, dice_number, active_threats, crew, message_to_continue, user_confirmation=False):
+def print_interface(health, shield, active_threats, crew, message_to_continue = "Press (↵) to continue", dice_number = "_", user_confirmation=False):
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)
     active_threats_str = ""
 
     for threat in active_threats:
-        threat_info = "- " + str(threat["health"]) + " | " + str(threat["name"]) + " | " + str(threat["description"]) 
+        threat_health = str(threat["health"])
+        if threat_health == "15":
+            threat_health = "◬"
+        threat_info = "- " + threat_health + " | " + str(threat["name"]) + " | " + str(threat["description"]) + " | " + str(threat["assigned_crew"])
         remaining_spaces = 92-len(threat_info)
         str1 = " "* remaining_spaces + "║" + "\n║   "
         active_threats_str += threat_info + str1
@@ -50,10 +53,10 @@ def print_interface(health, shield, dice_number, active_threats, crew, message_t
 ║                             `-' `-' `-' '     `-' '   ` ' `-' `-'                             ║   
 ║                             -------------------------------------                             ║   B = Blocked        I = Infirmary       F = Free
 ║                                                                                               ║
-║                                                                                               ║
-║                         ___                        Health: {health_percentage}% {"███" * health}{" "*(33-health*3-len(str(health_percentage)))}║
+║                                                                                               ║   ◬ = Internal Threat
+║                         ___                        Health: {str(health_percentage) + "%" + " "*(4-len(str(health_percentage))) + "███"*health + " "*(32-health*3-2)}║   Active Threats Structure --> Health | Name | Description | Assigned crew
 ║     Active Threats:    |_{dice_number}_|                                                                  ║
-║   -----------------------------                    Shield: {shield_percentage}% {"███" * shield}{" "*(33-shield*3-len(str(shield_percentage)))}║
+║   -----------------------------                    Shield: {str(shield_percentage) + "%" + " "*(4-len(str(shield_percentage))) + "███"*shield + " "*(32-shield*3-2)}║
 ║                                                                                               ║
 ║   {active_threats_str}                                                                                            ║
 ║                                                                                               ║
@@ -80,7 +83,7 @@ def check_scanners(crew):
         n_of_scanners= free_scanners(crew, n_of_scanners)
         
         
-    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
+    print_interface(health, shield, threats, crew, "Press (↵) to continue")
 
 # DONE
 def free_scanners(crew, n_of_scanners):
@@ -125,7 +128,7 @@ def add_threat(active_threats, threats):
 def main():
     #new_threats = check_difficulty("3")
     #print(new_threats)
-    print_interface(health, shield, 6, threats, crew, "Press enter to continue")
+    print_interface(health, shield, threats, crew, "Press (↵) to continue")
     check_scanners(crew)
 
 if __name__ == "__main__":
