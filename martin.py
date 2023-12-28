@@ -9,6 +9,7 @@ CREW_SCIENCE = 3
 CREW_ENGINEERING = 4
 CREW_SCANNER = 5
 
+
 def throw_dice(n):
     """
     Throws 'n' number of dice and returns an array with the random numbers.
@@ -50,8 +51,17 @@ def clear_terminal():
     else: # Linux or Mac
         os.system('clear')
 
+
 def change_face(crewmember):
+    """
+    Changes the crew type of a crewmember based on user input.
     
+    Args:
+        crewmember (dict): The crewmember whose crew type is to be changed.
+        
+    Returns:
+        dict: The updated crewmember with the new crew type.
+    """
     crewmember_copy = crewmember.copy()
     print('Choose into what you want to change the crewmember to: \n\n1) Tactical\n2) Medical\n3) Scientific\n4) Engineer')
     
@@ -81,10 +91,11 @@ def show_options(crewmember, crew, active_threats, health, shield):
         crewmember (dict): The crewmember for whom options are displayed.
         crew (list): List of all crewmembers.
         active_threats (list): List of active threats.
-        message (str): The current message to be displayed.
+        health (int): The current health value.
+        shield (int): The current shield value.
         
     Returns:
-        str: The updated message after displaying options.
+        tuple: A tuple containing the updated crew, active threats, health and shield values.
     """
     crew_copy = crew.copy()
 
@@ -167,8 +178,6 @@ def show_options(crewmember, crew, active_threats, health, shield):
     if crewmember['crew_type'] == CREW_SCIENCE:
         pass
     if crewmember['crew_type'] == CREW_ENGINEERING:
-        pass
-    if crewmember['crew_type'] == CREW_TACTICAL:
         pass
 
 def crew_status(crew):
