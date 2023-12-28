@@ -9,6 +9,12 @@ CREW_SCIENCE = 3
 CREW_ENGINEERING = 4
 CREW_SCANNER = 5
 
+crew = [{"crew_type":0, "blocked": False, "infirmary": False},{"crew_type":0, "blocked": True, "infirmary": False},{"crew_type":1, "blocked": True, "infirmary": False},{"crew_type":2, "blocked": True, "infirmary": False},{"crew_type":3, "blocked": True, "infirmary": False},{"crew_type":4, "blocked": True, "infirmary": False}]
+
+health = 8
+shield = 4
+
+active_threats = []
 
 def throw_dice(n):
     """
@@ -201,7 +207,7 @@ def crew_status(crew):
             # looking for the unblocked crewmates to add them to the message and to an array of active crew
             for i in range(len(crew_names)):
                 if i == crewmate['crew_type']:
-                    message += crew_names[i] + ' (' + i + ')   '
+                    message += crew_names[i] + ' (' + str(i) + ')   '
 
         if crewmate['blocked'] == True:
             # looking for the blocked crewmates and adding them to the message indicating they are doing some stuff
@@ -290,4 +296,8 @@ def assign_crew(crew, active_threats, health, shield):
         else:
             key_pressed = False
 
+def main():
+    assign_crew(crew, active_threats, health, shield)
 
+if __name__ == "__main__":
+    main()
