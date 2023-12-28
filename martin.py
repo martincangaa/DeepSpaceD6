@@ -106,9 +106,13 @@ def show_options(crewmember, crew, active_threats, health, shield):
 
         print(message_options)
 
+        key_pressed = False
+
         while not keyboard.is_pressed('c'):
 
             if keyboard.is_pressed('1') and not key_pressed:
+                
+                key_pressed = True
 
                 crew_options = crew_status(crew)
                 print(crew_options)
@@ -157,15 +161,15 @@ def show_options(crewmember, crew, active_threats, health, shield):
                         else:
                             print('Choose a valid option')
 
-                key_pressed = True
                 break
 
             
             if keyboard.is_pressed('2') and not key_pressed:
                 
+                key_pressed = True
+
                 # I guess this is the part where we reroll the dices using get crew which hopefully will return the crew_copy with the changes made
 
-                key_pressed = True
                 break
             else:
                 key_pressed = False
@@ -237,52 +241,54 @@ def assign_crew(crew, active_threats, health, shield):
     message += '\nPress [1,2,3...] respectively to interact with the crew member. (To escape press [c] )\n\n'
     print(message)
 
+    key_pressed = False
+
     while not keyboard.is_pressed('c'):
 
         if keyboard.is_pressed('1') and not key_pressed:
             if crew_copy[0]['blocked'] == False and crew_copy[0]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[0], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[0], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
 
         if keyboard.is_pressed('2') and key_pressed:
             if crew_copy[1]['blocked'] == False and crew_copy[1]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew[1], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew[1], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('3') and key_pressed:
             if crew_copy[2]['blocked'] == False and crew_copy[2]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[2], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[2], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('4') and key_pressed:
             if crew_copy[3]['blocked'] == False and crew_copy[3]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[3], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[3], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('5') and key_pressed:
             if crew_copy[4]['blocked'] == False and crew_copy[4]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[4], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[4], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
         
         if keyboard.is_pressed('6') and key_pressed:
             if crew_copy[5]['blocked'] == False and crew_copy[5]['infirmary'] == False:
-                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[5], crew_copy, active_threats_copy, health, shield)
                 key_pressed = True
+                crew_copy, active_threats_copy, health, shield = show_options(crew_copy[5], crew_copy, active_threats_copy, health, shield)
             else:
                 print('Choose a valid option')
                 key_pressed = True
