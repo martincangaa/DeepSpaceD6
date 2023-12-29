@@ -119,12 +119,6 @@ def check_difficulty(difficulty):
 
     return new_threats
 
-def user_confirmation():
-    pass
-
-def add_threat(active_threats, threats):
-    pass
-
 def main():
     #new_threats = check_difficulty("3")
     #print(new_threats)

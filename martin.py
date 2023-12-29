@@ -296,9 +296,72 @@ def show_options(crewmember, crew, active_threats, health, shield):
         return crew_copy, active_threats, health, shield
     if crewmember['crew_type'] == CREW_MEDICAL:
         return crew_copy, active_threats, health, shield
+    
     if crewmember['crew_type'] == CREW_SCIENCE:
+        
+        clear_terminal()
+        print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
+        message_options = 'SCIENCE options: \n\n1) Recharge shields\n\n2) Fire Stasis Beam\n\n3) Assign science\n'
+
+        print(message_options)
+
+        key_pressed = True
+        key_pressed2 = True
+
+        time.sleep(0.1)
+
+        while True:
+            if keyboard.is_pressed('1'):
+                if not key_pressed:
+                    key_pressed = True
+                    shield = 4
+                    break
+            elif keyboard.is_pressed('2'):
+                if not key_pressed:
+                    key_pressed = True
+                    #FIRE STASIS BEAM
+                    break
+            elif keyboard.is_pressed('3'):
+                if not key_pressed:
+                    key_pressed = True
+                    active_threats_copy = assign_crew_threat(crewmember, active_threats_copy, crew_copy, health, shield)
+                    break
+            else:
+                key_pressed = False
         return crew_copy, active_threats, health, shield
+    
     if crewmember['crew_type'] == CREW_ENGINEERING:
+
+        clear_terminal()
+        print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
+        message_options = 'ENGINEERING options: \n\n1) Repair the hull\n\n2) Assign science\n'
+
+        print(message_options)
+
+        key_pressed = True
+        key_pressed2 = True
+
+        hull_repaired_in_turn = False
+
+        time.sleep(0.1)
+
+        while True:
+            if keyboard.is_pressed('1'):
+                if not key_pressed:
+                    key_pressed = True
+                    if not hull_repaired_in_turn:
+                        health += 1
+                        hull_repaired_in_turn = True
+                    elif hull_repaired_in_turn:
+                        health += 2
+                    break
+            elif keyboard.is_pressed('2'):
+                if not key_pressed:
+                    key_pressed = True
+                    active_threats_copy = assign_crew_threat(crewmember, active_threats_copy, crew_copy, health, shield)
+                    break
+            else:
+                key_pressed = False
         return crew_copy, active_threats, health, shield
 
 def crew_status(crew):
