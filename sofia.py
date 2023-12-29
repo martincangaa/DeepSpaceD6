@@ -14,11 +14,11 @@ def menu():
     print("2 - Medium: 3 Don't panic cards are substracted from the threads")
     print("3 - Hard: 6 Don't panic cards are substracted from the threads")
     time.sleep(4)
-    difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
-    while not (difficulty == 1 or difficulty == 2 or difficulty == 3):
+    difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
+    while not (difficulty == '1' or difficulty == '2' or difficulty == '3'):
         print('Not valid level')
         time.sleep(2)
-        difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
+        difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
     return difficulty
 
