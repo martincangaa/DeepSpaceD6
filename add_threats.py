@@ -165,7 +165,7 @@ def add_threat(active_threats):
     robot_uprising = {'name': 'Robot Uprising', 'description': 'Send unit to infirmary', 'dice_numbers': [1,2,3], 'health': no_health_threat, 'attack': '',  'assignable_crew': [CREW_ENGINEERING], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False, } 
     
-    list_of_threats = [flagship, solar_winds, intercepter, scouting_ship, raiders, boarding_ship, space_pirates, raiders, boarding_ship, space_pirates, raiders2, raiders3,
+    list_of_threats = [flagship, solar_winds, intercepter, scouting_ship, raiders, boarding_ship, space_pirates, raiders, space_pirates, raiders2, raiders3,
                        meteoroid, drone, bounty_ship, bomber, space_pirates2, intercepter_x, space_pirates3, drone2, hijackers, corsair, friendly_fire, cosmic_existentialism,
                        nebula, mercernary, cloaked_threats, assault_cruiser, distracted, time_warp, bomber2, boost_morale, panel_explosion, assault_cruiser, pandemic, invaders,
                        bomber3, comms_offlime, robot_uprising ]
@@ -236,6 +236,12 @@ def activate_threats(active_threats,crew, threat):
                 if shield <0:
                     health -= abs(shield)
                     shield=0
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            member[1]['infirmary'] == True
+                            active_threats.remove(boarding_ship)
+                
             if threat['name'] == 'Boarding Ship' and threat['stun'] == True:
                 threat['stun'] = False
             
@@ -261,19 +267,58 @@ def activate_threats(active_threats,crew, threat):
                 activated_threat = True
                 if shield <0:
                     health -= abs(shield)
-                    shield=0 
+                    shield=0
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            active_threats.remove(hijackers)
            
             if threat['name'] == 'Hijackers' and threat['stun'] == True:   
                 threat['stun'] = False        
             
-            if (threat['name'] == 'Pandemic' or threat['name'] == 'Invaders' or threat['name'] == 'Robot Uprising') and threat['stun'] == False:
+            if threat['name'] == 'Pandemic' and threat['stun'] == False:
                 activated_threat = True
                 while True:
                     i = random.randint(0,5)
                     if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                         crew[i]['infimary'] == True
-                        break   
-            if (threat['name'] == 'Pandemic' or threat['name'] == 'Invaders' or threat['name'] == 'Robot Uprising') and threat['stun'] == True:
+                        break
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            active_threats.remove(pandemic)
+            
+            if threat['name'] == 'Pandemic' and threat['stun'] == True:
+                threat['stun'] = False
+            
+            if threat['name'] == 'Invaders':
+                activated_threat = True
+                while True:
+                    i = random.randint(0,5)
+                    if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
+                        crew[i]['infimary'] == True
+                        break
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            active_threats.remove(invaders)
+            
+            if threat['name'] == 'Invaders' and threat['stun'] == True:
+                threat['stun'] = False
+            
+            if threat['name'] == 'Robot Uprising':
+                activated_threat = True
+                while True:
+                    i = random.randint(0,5)
+                    if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
+                        crew[i]['infimary'] == True
+                        break
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            active_threats.remove(robot_uprising)
+                   
+            if  threat['name'] == 'Robot Uprising' and threat['stun'] == True:
                 threat['stun'] == False
 
             if threat['name'] == 'Panel Explosion' and threat['stun'] == False:
@@ -342,22 +387,34 @@ def activate_threats(active_threats,crew, threat):
                 for t in active_threats:
                     if health != initial_health:
                         health += 1
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            crew[3]['blocked'] == False
+                            active_threats.remove(time_warp)
             
             if threat['name'] == 'Time Warp' and threat['stun'] == True:
                 threat['stun'] == False
 
             if threat['name'] == 'Distracted' and threat['stun'] == False:
                 activated_threat = True
+                """This threat isn't properly done"""
                 while True:
                     i = random.randint(0,5)
                     if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                         crew[i]['blocked'] == True
+                
             
             if threat['name'] == 'Distracted' and threat['stun'] == True:
                 threat['stun'] == False
 
             if threat['name'] == 'Cloaked Threats' and threat['stun'] == False:
                 activated_threat = True
+                for member in crew:
+                    if member['blocked'] == False:
+                        if threat['assigned_crew'] == threat['assignable_crew']:
+                            crew[3]['blocked'] == False
+                            active_threats.remove(cloaked_threats)
                 activate_threat(threat, shield, health)
                 
             if threat['name'] == 'Cloaked Threats' and threat['stun'] == True:
