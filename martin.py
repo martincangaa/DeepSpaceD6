@@ -162,7 +162,6 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
     return active_threats_copy
 
 def stun_threat(active_threats):
-    key_pressed = False
     threat_stunned = False
     active_threats_list = ""
 
@@ -177,8 +176,7 @@ def stun_threat(active_threats):
     while True:
         for i in range(len(active_threats)):
             if keyboard.is_pressed(str(i+1)):
-                if not key_pressed:
-                    key_pressed = True
+                if not threat_stunned:
                     active_threats[i]["stun"] = True
                     threat_stunned = True
                     break
