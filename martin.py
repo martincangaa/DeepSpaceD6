@@ -140,6 +140,17 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
 
     active_threats_copy = active_threats.copy()
 
+    if crewmember['crew_type'] == CREW_COMMANDER:
+        name = 'Commander'
+    elif crewmember['crew_type'] == CREW_TACTICAL:
+        name = 'Tactical'
+    elif crewmember['crew_type'] == CREW_MEDICAL:
+        name = 'Medical'
+    elif crewmember['crew_type'] == CREW_SCIENCE:
+        name = 'Science'
+    elif crewmember['crew_type'] == CREW_ENGINEERING:
+        name = 'Engineering'
+
     for threat in active_threats:
         if len(threat['assigned_crew']) < len(threat['assignable_crew']) and crewmember['crew_type'] in threat['assignable_crew']:
             
@@ -149,7 +160,7 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
             assignable_string += f"{str(i)}) {threat['name']}\n"
         
     #print_assign(health, shield, active_threats_copy, crew, 'Press (↵) to escape')
-    print(f"Select the threat you want to assign the commander to:\n{assignable_string}")
+    print(f"Select the threat you want to assign the {name} to:\n{assignable_string}")
     
     while True:
         input = keyboard.read_event().name
@@ -290,7 +301,7 @@ def show_options(crewmember, crew, active_threats, health, shield):
             else:
                 key_pressed = False
 
-        return crew_copy, active_threats, health, shield
+        return crew_copy, active_threats_copy, health, shield
 
     if crewmember['crew_type'] == CREW_TACTICAL:
         return crew_copy, active_threats, health, shield
@@ -471,6 +482,8 @@ def assign_crew(crew, active_threats, health, shield):
 
         else:
             key_pressed = False
+        
+    return crew_copy, active_threats_copy, health, shield
     
 def main():
     """
