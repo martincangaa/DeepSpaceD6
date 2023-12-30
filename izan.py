@@ -31,6 +31,19 @@ shield = 4
 
 # DONE
 def print_interface(health, shield, active_threats, crew, message_to_continue = "Press (↵) to continue", dice_number = "_", user_confirmation=False):
+    """
+    Prints the main interface of the game with the title, health, shield,
+    active threats, the threat's dice result, the crew and messages for the user.
+
+    Args:
+        health (int): The player's life
+        shield (int): The player's shields
+        active_threats (array): An array containing the active threats at the moment
+        crew (array): An array containing the crewmates
+        message_to_continue (String): message to be printed in the bottom right corner to the user that has a default value
+        dice_number (int): the threat's dice result, it's default value is a "_" so that it looks good when the dice hasn't been thrown
+        user_confirmation (boolean): States wheter if the function should call user_confirmation after printing or just continue without waiting, default value = False
+    """
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)
@@ -72,6 +85,13 @@ def print_interface(health, shield, active_threats, crew, message_to_continue = 
 
 # DONE
 def check_scanners(crew):
+    """
+    Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
+    and then frees those scanners used to spawn the threat.
+
+    Args:
+        crew (array): An array containing the crewmates
+    """
     n_of_scanners = 0
 
     for crewmate in crew:
@@ -87,6 +107,16 @@ def check_scanners(crew):
 
 # DONE
 def free_scanners(crew, n_of_scanners):
+    """
+    Changes the crew type of three crewmates of type scanner
+
+    Args:
+        crew (array): An array containing the crewmates
+        n_of_scanners (int): the number of scanners in the crew
+    
+    Returns:
+        n_of_scanners (int): the number of remaining scanners in crew
+    """
     crewmate = 0
     n_of_released_scanners = 0
 
@@ -101,13 +131,23 @@ def free_scanners(crew, n_of_scanners):
 
 # DONE
 def check_difficulty(difficulty):
+    """
+    Checks the difficulty selected by the user in the menu and substracts a given number of
+    Don't Panic cards from the threats array in order to change the difficulty of the game
+
+    Args:
+        difficulty (int): The difficulty selection of the user in the menu (1 = easy, 2 = medium, 3 = hard)
+    
+    Returns:
+        new_threats (array): An array similar to the threats one but without the corresponding Don't Panic cards
+    """
     new_threats = threats[:]
 
-    if difficulty == "1":
+    if difficulty == 1:
         cards_to_be_removed = 1
-    if difficulty == "2":
+    if difficulty == 2:
         cards_to_be_removed = 3
-    if difficulty == "3":
+    if difficulty == 3:
         cards_to_be_removed = 6
 
     while cards_to_be_removed > 0:
@@ -120,7 +160,7 @@ def check_difficulty(difficulty):
     return new_threats
 
 def main():
-    #new_threats = check_difficulty("3")
+    #new_threats = check_difficulty(3)
     #print(new_threats)
     print_interface(health, shield, threats, crew, "Press (↵) to continue")
     check_scanners(crew)
