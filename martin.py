@@ -254,6 +254,30 @@ def are_scanners(crew):
             return True
     return False
 
+def stun_threat(active_threats):
+    threat_stunned = False
+    active_threats_list = ""
+
+    for i in range(len(active_threats)):
+        active_threats_list += str(i+1) + ") " + active_threats[i]["name"] + "\n"
+
+    print('Select the threat you want to stun:\n')
+    print(active_threats_list)  
+
+    time.sleep(0.1) 
+
+    while True:
+        for i in range(len(active_threats)):
+            if keyboard.is_pressed(str(i+1)):
+                if not threat_stunned:
+                    active_threats[i]["stun"] = True
+                    threat_stunned = True
+                    break
+        if threat_stunned:
+            break
+
+    return active_threats
+
 def show_options(crewmember, crew, active_threats, health, shield):
     """
     Displays options for a crewmember based on their crew type.
@@ -479,9 +503,83 @@ def show_options(crewmember, crew, active_threats, health, shield):
         return crew_copy, active_threats_copy, health, shield
     
     if crewmember['crew_type'] == CREW_SCIENCE:
-        return crew_copy, active_threats, health, shield
+        
+        clear_terminal()
+        print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
+        message_options = 'SCIENCE options: \n\n1) Fire Stasis Beam\n\n2) Recharge shields\n\n3) Assign science\n'
+
+        print(message_options)
+
+        key_pressed = False
+        key_pressed2 = True
+
+        time.sleep(0.1)
+
+        while True:
+            if keyboard.is_pressed('1'):
+                if not key_pressed:
+                    key_pressed = True
+                    active_threats_copy = stun_threat(active_threats_copy)
+                    break
+            
+            elif keyboard.is_pressed('2'):
+                if not key_pressed:
+                    key_pressed = True
+                    shield = 4
+                    break
+
+            elif keyboard.is_pressed('3'):
+                if not key_pressed:
+                    key_pressed = True
+                    active_threats_copy = assign_crew_threat(crewmember, active_threats_copy, crew_copy, health, shield)
+                    break
+
+            elif keyboard.is_pressed('enter'):
+                break
+
+            else:
+                key_pressed = False
+
+        return crew_copy, active_threats_copy, health, shield
+    
     if crewmember['crew_type'] == CREW_ENGINEERING:
-        return crew_copy, active_threats, health, shield
+
+        clear_terminal()
+        print_assign(health, shield, active_threats, crew, 'Press (↵) to exit the menu', message_2='')
+        message_options = 'ENGINEERING options: \n\n1) Repair the hull\n\n2) Assign engineer\n'
+
+        print(message_options)
+
+        key_pressed = True
+
+        hull_repaired_in_turn = False
+
+        time.sleep(0.1)
+
+        while True:
+            if keyboard.is_pressed('1'):
+                if not key_pressed:
+                    key_pressed = True
+                    if not hull_repaired_in_turn:
+                        health += 1
+                        hull_repaired_in_turn = True
+                    elif hull_repaired_in_turn:
+                        health += 2
+                    break
+
+            elif keyboard.is_pressed('2'):
+                if not key_pressed:
+                    key_pressed = True
+                    active_threats_copy = assign_crew_threat(crewmember, active_threats_copy, crew_copy, health, shield)
+                    break
+
+            elif keyboard.is_pressed('enter'):
+                break
+
+            else:
+                key_pressed = False
+
+        return crew_copy, active_threats_copy, health, shield
 
 def crew_status(crew):
     """
