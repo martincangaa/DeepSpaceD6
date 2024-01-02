@@ -13,50 +13,7 @@ crew = [CREW_COMMANDER, CREW_COMANDER, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEER
 #game_over
 #get_crew
 #activate_threats
-
-# added to input_output_user.py
-def game_over():
-    print("""
-         .d8888b.         d8888 888b     d888 8888888888 
-        d88P  Y88b       d88888 8888b   d8888 888        
-        888    888      d88P888 88888b.d88888 888        
-        888            d88P 888 888Y88888P888 8888888    
-        888  88888    d88P  888 888 Y888P 888 888        
-        888    888   d88P   888 888  Y8P  888 888        
-        Y88b  d88P  d8888888888 888   "   888 888        
-         "Y8888P88 d88P     888 888       888 8888888888 
-                                                 
-                                                 
-                                                 
-         .d88888b.  888     888 8888888888 8888888b.     
-        d88P" "Y88b 888     888 888        888   Y88b    
-        888     888 888     888 888        888    888    
-        888     888 Y88b   d88P 8888888    888   d88P    
-        888     888  Y88b d88P  888        8888888P"     
-        888     888   Y88o88P   888        888 T88b      
-        Y88b. .d88P    Y888P    888        888  T88b     
-         "Y88888P"      Y8P     8888888888 888   T88b 
-          """)
-    time.sleep(2)
-    ask_user = input("Do you want to keep playing?\n Yes\n No")
-    print(ask_user)    
-    while ask_user != 'Yes' or ask_user != 'No':
-        ask_user = input("")
-
-    if ask_user == "Yes":
-        main()
-    elif ask_user == 'no':
-        exit
-    
-
-# added to game_logic.py
-def add_threat(active_threats):
-    #A few comments and points that I've jotted down in the making of this function
-    #First of all, there are some threats which you can simply eliminate with tactical crew, but they can also be eliminated by assigning crew members
-    #prolly, what we should do is create another boolean to check if said those two conditions are met (having health and also being able to disable it by assigning crew)
-    #another thing that i've noted is that there is one function that can be disable either with a 3 or a with a 2, one option I've thought is the creation of another boolean
-    #I've also been pondering if I should add another boolean to time_warp or instead I should  just do its effect on activate_threads
-    no_health_threat = 15
+no_health_threat = 15
     flagship = {'name': 'Flagship', 'description': '-3 Hull', 'dice_numbers': [4,5,6], 'health': 4, 'attack': '3NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False, } 
     
@@ -170,7 +127,43 @@ def add_threat(active_threats):
                        meteoroid, drone, bounty_ship, bomber, space_pirates2, intercepter_x, space_pirates3, drone2, hijackers, corsair, friendly_fire, cosmic_existentialism,
                        nebula, mercernary, cloaked_threats, assault_cruiser, distracted, time_warp, bomber2, boost_morale, panel_explosion, assault_cruiser, pandemic, invaders,
                        bomber3, comms_offlime, robot_uprising ]
+# added to input_output_user.py
+def game_over():
+    print("""
+         .d8888b.         d8888 888b     d888 8888888888 
+        d88P  Y88b       d88888 8888b   d8888 888        
+        888    888      d88P888 88888b.d88888 888        
+        888            d88P 888 888Y88888P888 8888888    
+        888  88888    d88P  888 888 Y888P 888 888        
+        888    888   d88P   888 888  Y8P  888 888        
+        Y88b  d88P  d8888888888 888   "   888 888        
+         "Y8888P88 d88P     888 888       888 8888888888 
+                                                 
+                                                 
+                                                 
+         .d88888b.  888     888 8888888888 8888888b.     
+        d88P" "Y88b 888     888 888        888   Y88b    
+        888     888 888     888 888        888    888    
+        888     888 Y88b   d88P 8888888    888   d88P    
+        888     888  Y88b d88P  888        8888888P"     
+        888     888   Y88o88P   888        888 T88b      
+        Y88b. .d88P    Y888P    888        888  T88b     
+         "Y88888P"      Y8P     8888888888 888   T88b 
+          """)
+    time.sleep(2)
+    ask_user = input("Do you want to keep playing?\n Yes\n No")
+    print(ask_user)    
+    while ask_user != 'Yes' or ask_user != 'No':
+        ask_user = input("")
+
+    if ask_user == "Yes":
+        main()
+    elif ask_user == 'no':
+        exit
     
+
+# added to game_logic.py
+def add_threat(active_threats):
     add_random_threat = random.choice(list_of_threats)
     active_threats.append(add_random_threat)
     list_of_threats.remove(add_random_threat)
