@@ -395,7 +395,7 @@ def iterate_through_threats(active_threats, shield, health):
     throw_dice_result = throw_dice(1)
     for threat in active_threats:
         crew = activate_threats(threat, shield, health, throw_dice_result[0])
-    return throw_dice_result, crew
+    return throw_dice_result[0], crew
 
 def get_crew(crew):
     crew_copy = crew.copy()
@@ -417,34 +417,71 @@ def check_scanners(crew):
         n_of_scanners= free_scanners(crew, n_of_scanners)
 
 def free_scanners(crew, n_of_scanners):
+    """
+    Changes the crew type of three crewmates of type scanner
+
+    Args:
+        crew (array): An array containing the crewmates
+        n_of_scanners (int): the number of scanners in the crew
+    
+    Returns:
+        n_of_scanners (int): the number of remaining scanners in crew
+        crew_copy (array): An array containing the updated crewmates
+    """
+    crew_copy = crew[:]
     crewmate = 0
     n_of_released_scanners = 0
 
     while n_of_released_scanners < 3 and crewmate < len(crew):
-        if crew[crewmate]["crew_type"] == 5:
-            crew[crewmate]["crew_type"] = 6
-            crew[crewmate]["blocked"] = False
+        if crew_copy[crewmate]["crew_type"] == 5:
+            crew_copy[crewmate]["crew_type"] = 6
+            crew_copy[crewmate]["blocked"] = False
             n_of_released_scanners += 1
             n_of_scanners -= 1
         crewmate += 1
-    return n_of_scanners
+    return n_of_scanners, crew_copy
 
-def check_scanners(crew):
+def check_scanners(crew, active_threats, threats):
+    """
+    Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
+    and then frees those scanners used to spawn the threat.
+
+    Args:
+        crew (array): An array containing the crewmates
+
+    Returns: 
+        crew_copy (array): An array containing the updated crewmates
+    """
+
+    crew_copy = crew[:]
     n_of_scanners = 0
 
-    for crewmate in crew:
+    for crewmate in crew_copy:
         if crewmate["crew_type"] == 5:
             n_of_scanners += 1
     
     while n_of_scanners >= 3:
         add_threat(active_threats, threats)
         n_of_scanners= free_scanners(crew, n_of_scanners)
-        
-        
-    print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
 
-def check_difficulty(difficulty):
+    return crew_copy
+
+def check_difficulty(threats):
+    """
+    Checks the difficulty selected by the user in the menu and substracts a given number of
+    Don't Panic cards from the threats array in order to change the difficulty of the game
+
+    Args:
+        difficulty (int): The difficulty selection of the user in the menu (1 = easy, 2 = medium, 3 = hard)
+    
+    Returns:
+        new_threats (array): An array similar to the threats one but without the corresponding Don't Panic cards
+    """
     new_threats = threats[:]
+
+    f = open('dificulty', "r")
+    difficulty = f.readline().strip() 
+    f.close()
 
     if difficulty == "1":
         cards_to_be_removed = 1
@@ -461,6 +498,33 @@ def check_difficulty(difficulty):
                 break
 
     return new_threats
+
+def free_crew(threat, crew):
+    for assigned_crewmate in threat["assigned_crew"]:
+        for crewmate in crew:
+            if crewmate == assigned_crewmate and crewmate["blocked"]:
+                crewmate["blocked"] = False
+                break
+
+def check_threats(active_threats, crew):
+    active_threats_copy = active_threats[:]
+    threats_to_remove = []
+    
+    for threat in active_threats_copy:
+        if threat['name'] == "Friendly Fire" or threat['name'] == "Boost Morale":
+            threats_to_remove.append(threat)
+            free_crew(threat, crew)
+        if threat['health'] <= 0:
+            threats_to_remove.append(threat)
+            free_crew(threat, crew)
+        if len(threat["assignable_crew"]) > 0 and Counter(threat['assignable_crew']) == Counter(threat['assigned_crew']):
+            threats_to_remove.append(threat)
+            free_crew(threat, crew)
+
+    for threat in threats_to_remove:
+        active_threats_copy.remove(threat)
+
+    return active_threats_copy
 
 def can_be_gathered(crew):
     for crewmate in crew:

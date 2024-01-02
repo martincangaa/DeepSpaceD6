@@ -21,7 +21,7 @@ def menu():
         time.sleep(2)
         difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
-    file = open('difficulty.txt', 'w')
+    file = open('difficulty', 'w')
     file.write(str(difficulty))
     file.close()
 

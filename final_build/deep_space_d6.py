@@ -50,6 +50,9 @@ def main():
         
         crew, active_threats, health, shield = io.assign_crew(crew, active_threats, health, shield)
 
+        threats = gl.check_threats(active_threats, crew)
+
+        io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", user_confirmation =True)
         # |
         # |-> 
             # for every repetition inside the assign_crew we will use at least this:
@@ -68,9 +71,10 @@ def main():
         gl.activate_threats(active_threats, crew)
 
         dice_number, crew = gl.activate_threat(active_threats, crew)
+        
         dice_number_str = str(dice_number)
 
-        io.print_interface(health, shield, active_threats, crew, user_confirmation = True, dice_number = str(dice_number))
+        io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", user_confirmation = True, dice_number = str(dice_number))
 
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called
