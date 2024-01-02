@@ -13,7 +13,7 @@ NONE = 6
 
 def menu():
     """
-    Shows the user the different levels that can be played inside the game and asks which of them is going to be played.
+    Shows the user the different levels that can be played inside the game, asks which of them is going to be played and writes it in a file.
 
     Returns:
         int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
@@ -22,14 +22,15 @@ def menu():
     print("1 - Easy: 1 Don't panic card is substracted from the threads")
     print("2 - Medium: 3 Don't panic cards are substracted from the threads")
     print("3 - Hard: 6 Don't panic cards are substracted from the threads")
-    time.sleep(4)
-    difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
-    while not (difficulty == 1 or difficulty == 2 or difficulty == 3):
+
+    difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
+    while not (difficulty == '1' or difficulty == '2' or difficulty == '3'):
         print('Not valid level')
-        time.sleep(2)
-        difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
+        difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
-    return difficulty
+    file = open('difficulty', 'w')
+    file.write(str(difficulty))
+    file.close()
 
 def user_confirmation():
     keyboard.wait("enter")

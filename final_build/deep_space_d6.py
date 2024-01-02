@@ -18,11 +18,20 @@ def main():
     health = 8
     shield = 4  
     # dice_number = None
-    crew = []
-    threats = []
+    crew = [
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False},
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False},
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False},
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False},
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False},
+        {'crew_type': EMPTY, 'blocked': False, 'infirmary': False}
+        ]
+    
+    threats = gl.create_threats()
     active_threats = []
     n_external_defeated = 0 # the number of enemies defeated
 
+    
     io.menu()
 
     while True:
