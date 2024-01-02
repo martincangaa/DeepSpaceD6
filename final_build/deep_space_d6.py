@@ -23,15 +23,11 @@ def main():
     active_threats = []
     n_external_defeated = 0 # the number of enemies defeated
 
-    menu()
-    
-    check_dificulty(difficulty)
+    io.menu()
 
     while True:
 
         io.print_interface(health, shield, active_threats, crew)
-
-        time.sleep(3) # in order for the user to see the board before loosing or restarting
 
         #Conditions to loose
         if health <= 0 or gl.can_be_gathered(crew) == False: 
@@ -40,12 +36,12 @@ def main():
 
         crew = gl.get_crew(crew)
 
-        iu.print_interface(health, shield, active_threats, crew)
-        user_confirmation() # provisional
+        io.print_interface(health, shield, active_threats, crew)
+        
 
         gl.check_scanners(crew)
-        
-        io.print_interface(health, shield, active_threats, crew)
+
+        io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", user_confirmation =True)
 
         # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
         # will check if the active_threats can be solved with any current crewmate, if it is possible to get a crewmate out of the infirmary...
@@ -65,13 +61,16 @@ def main():
             win = True  # determine the screen to be printed after ending the loop (see if-statement out of the loop)
             break   # get out of the while
 
-        add_threat(threats, active_threats)
+        active_threats = gl.add_threat(threats, active_threats)
 
-        io.print_interface(health, shield, active_threats, crew, user_confirmation=True)
+        io.print_interface(health, shield, active_threats, crew, user_confirmation = True)
 
         gl.activate_threats(active_threats, crew)
 
-        dice_number = activate_threat(active_threats, crew)
+        dice_number, crew = gl.activate_threat(active_threats, crew)
+        dice_number_str = str(dice_number)
+
+        io.print_interface(health, shield, active_threats, crew, user_confirmation = True, dice_number = str(dice_number))
 
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called

@@ -118,21 +118,6 @@ def win_game():
     if play_again == 'Yes':
         main()
 
-def throw_dice(n):
-    """
-    Throws 'n' number of dice and returns an array with the random numbers.
-    
-    Args:
-        n (int): The number of dice to be thrown.
-        
-    Returns:
-        list: An array with 'n' random numbers between 1 and 6.
-    """
-    random_numbers = []
-    for i in range(n):
-        random_numbers.append(random.randint(1, 6))
-    return random_numbers
-
 def clear_terminal():
     """
     Clears the terminal screen.
