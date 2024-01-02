@@ -69,7 +69,7 @@ def create_threats():
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     
     scouting_ship = {'name': 'Scouting Ship', 'description': 'If you lost Hull this round, lose 1 additional Hull', 'dice_numbers': [], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     #raiders is repeated 3 times thorough the game
     raiders = {'name': 'Raiders', 'description': '-2 Hull Ignore shields', 'dice_numbers': [4,6], 'health': 2, 'attack': '2IG',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
@@ -81,53 +81,53 @@ def create_threats():
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
     
     boarding_ship = {'name': 'Boarding Ship', 'description': '-2 Hull Can be blocked if you use one tactial unit, but it gets sent to infirmary', 'dice_numbers': [3, 4], 'health': 4, 'attack': '2NM',  'assignable_crew': [CREW_TACTICAL, CREW_TACTICAL], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     #space_pirates is repeated 3 times thorough the game
     space_pirates = {'name': 'Space Pirates', 'description': '-2 Hull', 'dice_numbers': [1, 3], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
 
     space_pirates2 = {'name': 'Space Pirates', 'description': '-2 Hull', 'dice_numbers': [1, 3], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     
     space_pirates3 = {'name': 'Space Pirates', 'description': '-2 Hull', 'dice_numbers': [1, 3], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
       
     #Meteoroid removes 5 points of hull when destroyed, I've got no clue on if I should create a new key for that or just do it when I activate it 
     meteoroid = {'name': 'Meteoroid', 'description': '-1 Health, when destroyed -5 Hull', 'dice_numbers': [1], 'health': 4, 'attack': '1IS',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     #drone is repeated 2 times thorough the game
     drone = {'name': 'Drone', 'description': '-1 Hull', 'dice_numbers': [2,4,6], 'health': 1, 'attack': '1NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     
-    drone2 = {'name': 'Drone', 'description': '-1 Hull', 'dice_numbers': [2,4,6], 'health': 1, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}  
+    drone2 = {'name': 'Drone', 'description': '-1 Hull', 'dice_numbers': [2,4,6], 'health': 1, 'attack': '1NM',  'assignable_crew': [],
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     
     bounty_ship = {'name': 'Bounty Ship', 'description': 'Destroy all shields -1 Hull', 'dice_numbers': [1, 2], 'health': 4, 'attack': '1DS',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     #Bomber is repeated 2 times thorough the game though with different characteristics
     bomber = {'name': 'Bomber', 'description': '-1 Hull, send a unit to the infirmary', 'dice_numbers': [3,4], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     
     bomber2 = {'name': 'Bomber', 'description': '-1 Hull, send a unit to the infirmary', 'dice_numbers': [2,4], 'health': 2, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     
     bomber3 = {'name': 'Bomber', 'description': '-2 Hull, send a unit to the infirmary', 'dice_numbers': [2,4], 'health': 2, 'attack': '2NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     
     intercepter_x = {'name': 'Intercepter X', 'description': '-1 Hull', 'dice_numbers': [1,2,3,4,5], 'health': 4, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     
     hijackers = {'name': 'Hijackers', 'description': '-2 Hull', 'dice_numbers': [4,5], 'health': 4, 'attack': '1NM',  'assignable_crew': [CREW_COMMANDER, CREW_COMMANDER], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     
     corsair = {'name': 'Corsair', 'description': '-2 Hull', 'dice_numbers': [4,5,6], 'health': 2, 'attack': '2NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
     #This threat makes tactical go to infirmary
     friendly_fire = {'name': 'Friendly Fire', 'description': 'All tactical crew gets sent to infirmary', 'dice_numbers': [], 'health': no_health_threat, 'attack': '',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
 
     cosmic_existentialism = {'name': 'Cosmic Existentialism', 'description': 'Must be completed before assigning any other scientific crew', 'dice_numbers': [], 'health': no_health_threat, 'attack': '',  'assignable_crew': [CREW_SCIENCE], 
-                'assigned_crew': [], 'block_till_complete': [3], 'mission': True, 'stun': False} 
+                'assigned_crew': [], 'block_till_complete': [3], 'mission': True, 'stun': False}
 
     nebula = {'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
