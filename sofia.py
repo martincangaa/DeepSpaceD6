@@ -4,7 +4,7 @@ import keyboard
 # loop --> returns difficulty level
 def menu():
     """
-    Shows the user the different levels that can be played inside the game and asks which of them is going to be played.
+    Shows the user the different levels that can be played inside the game, asks which of them is going to be played and writes it in a file.
 
     Returns:
         int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
@@ -20,7 +20,9 @@ def menu():
         time.sleep(2)
         difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
-    return difficulty
+    file = open('difficulty.txt', 'w')
+    file.write(str(difficulty))
+    file.close()
 
 
 # Checks if there is at least one crewmate that can be gathered back, returns true or false
