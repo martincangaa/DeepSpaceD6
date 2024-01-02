@@ -2,7 +2,6 @@ import random
 import keyboard
 import os
 import time
-import izan as zn
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -12,7 +11,112 @@ CREW_ENGINEERING = 4
 CREW_SCANNER = 5
 NONE = 6
 
-#all functions have been added to user_input_output.py
+def menu():
+    """
+    Shows the user the different levels that can be played inside the game and asks which of them is going to be played.
+
+    Returns:
+        int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
+    """
+    print('LEVELS OF DIFFICULTY:')
+    print("1 - Easy: 1 Don't panic card is substracted from the threads")
+    print("2 - Medium: 3 Don't panic cards are substracted from the threads")
+    print("3 - Hard: 6 Don't panic cards are substracted from the threads")
+    time.sleep(4)
+    difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
+    while not (difficulty == 1 or difficulty == 2 or difficulty == 3):
+        print('Not valid level')
+        time.sleep(2)
+        difficulty = int(input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? '))
+    
+    return difficulty
+
+def user_confirmation():
+    keyboard.wait("enter")
+
+def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue',  dice_number='_',user_confirmation=False):
+    initials = ["C", "T", "M", "S", "E", "$", "/"]
+    health_percentage = int(health/8*100)
+    shield_percentage = int(shield/4*100)
+    active_threats_str = ""
+
+    for threat in active_threats:
+        threat_info = "- " + str(threat["health"]) + " | " + str(threat["name"]) + " | " + str(threat["description"]) 
+        remaining_spaces = 92-len(threat_info)
+        str1 = " "* remaining_spaces + "║" + "\n║   "
+        active_threats_str += threat_info + str1
+
+    print(f"""
+╔═══════════════════════════════════════════════════════════════════════════════════════════════╗   
+║                                                                                               ║   C = Commander      T = Tactical
+║                             .-. .-. .-. .-.   .-. .-. .-. .-. .-.                             ║   M = Medical        S = Science 
+║                             |  )|-  |-  |-'   `-. |-' |-| |   |-                              ║   E = Engineering    $ = Scanner         / = None
+║                             `-' `-' `-' '     `-' '   ` ' `-' `-'                             ║   
+║                             -------------------------------------                             ║   B = Blocked        I = Infirmary       F = Free
+║                                                                                               ║
+║                                                                                               ║
+║                         ___                        Health: {health_percentage}% {"███" * health}{" "*(33-health*3-len(str(health_percentage)))}║
+║     Active Threats:    |_{dice_number}_|                                                                  ║
+║   -----------------------------                    Shield: {shield_percentage}% {"███" * shield}{" "*(33-shield*3-len(str(shield_percentage)))}║
+║                                                                                               ║
+║   {active_threats_str}                                                                                            ║
+║                                                                                               ║
+║   ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐                     {"." + "-"*len(message_to_continue) + "." + " " * (29-len(message_to_continue))}║
+║   │ {initials[crew[0]["crew_type"]]} │  │ {initials[crew[1]["crew_type"]]} │  │ {initials[crew[2]["crew_type"]]} │  │ {initials[crew[3]["crew_type"]]} │  │ {initials[crew[4]["crew_type"]]} │  │ {initials[crew[5]["crew_type"]]} │                     |{message_to_continue}|{" " * (29-len(message_to_continue))}║
+║   └───┘  └───┘  └───┘  └───┘  └───┘  └───┘                     {"'" + "-"*len(message_to_continue) + "'" + " " * (29-len(message_to_continue))}║
+║     {"F" if not crew[0]["blocked"] and not crew[0]["infirmary"] else "I" if crew[0]["infirmary"] else "B"}      {"F" if not crew[1]["blocked"] and not crew[1]["infirmary"] else "I" if crew[1]["infirmary"] else "B"}      {"F" if not crew[2]["blocked"] and not crew[2]["infirmary"] else "I" if crew[2]["infirmary"] else "B"}      {"F" if not crew[3]["blocked"] and not crew[3]["infirmary"] else "I" if crew[3]["infirmary"] else "B"}      {"F" if not crew[4]["blocked"] and not crew[4]["infirmary"] else "I" if crew[4]["infirmary"] else "B"}      {"F" if not crew[5]["blocked"] and not crew[5]["infirmary"] else "I" if crew[5]["infirmary"] else "B"}                                                      ║
+║                                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════╝         
+           """)
+    if user_confirmation == True:
+        user_confirmation()
+
+def game_over():
+    print("""
+         .d8888b.         d8888 888b     d888 8888888888 
+        d88P  Y88b       d88888 8888b   d8888 888        
+        888    888      d88P888 88888b.d88888 888        
+        888            d88P 888 888Y88888P888 8888888    
+        888  88888    d88P  888 888 Y888P 888 888        
+        888    888   d88P   888 888  Y8P  888 888        
+        Y88b  d88P  d8888888888 888   "   888 888        
+         "Y8888P88 d88P     888 888       888 8888888888 
+                                                 
+                                                 
+                                                 
+         .d88888b.  888     888 8888888888 8888888b.     
+        d88P" "Y88b 888     888 888        888   Y88b    
+        888     888 888     888 888        888    888    
+        888     888 Y88b   d88P 8888888    888   d88P    
+        888     888  Y88b d88P  888        8888888P"     
+        888     888   Y88o88P   888        888 T88b      
+        Y88b. .d88P    Y888P    888        888  T88b     
+         "Y88888P"      Y8P     8888888888 888   T88b 
+          """)
+    time.sleep(2)
+    ask_user = input("Do you want to keep playing?\n Yes\n No")
+    print(ask_user)    
+    while ask_user != 'Yes' or ask_user != 'No':
+        ask_user = input("")
+
+    if ask_user == "Yes":
+        main()
+    elif ask_user == 'no':
+        exit
+
+def win_game():
+    print("""
+██╗    ██╗██╗███╗   ██╗
+██║    ██║██║████╗  ██║
+██║ █╗ ██║██║██╔██╗ ██║
+██║███╗██║██║██║╚██╗██║
+╚███╔███╔╝██║██║ ╚████║
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝""")
+    time.sleep(2)
+    play_again = input('Do you want to play again? (Input "Yes" to play again, anything else to finish the game): ')
+
+    if play_again == 'Yes':
+        main()
 
 def throw_dice(n):
     """
@@ -612,7 +716,7 @@ def crew_status(crew):
 def print_assign(health, shield, active_threats, crew_copy, message_to_continue, dice_number=' ', message_2 = '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'):
 
     clear_terminal()
-    zn.print_interface(health, shield, active_threats, crew_copy, message_to_continue)
+    print_interface(health, shield, active_threats, crew_copy, message_to_continue)
     message = crew_status(crew_copy)
     message += message_2
     print(message)
@@ -751,25 +855,3 @@ def assign_crew(crew, active_threats, health, shield):
             key_pressed = False
         
     return crew_copy, active_threats_copy, health, shield
-    
-def main():
-    """
-    Test functionality.
-    """
-    # Initialize variables
-    health = 8
-    shield = 1
-    crew = [
-        {'crew_type': CREW_COMMANDER, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_TACTICAL, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_MEDICAL, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_SCIENCE, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_ENGINEERING, 'blocked': False, 'infirmary': False},
-        {'crew_type': CREW_SCANNER, 'blocked': True, 'infirmary': False}]
-    active_threats = [{'name': 'Hijackers', 'description': '-2 Hull', 'dice_numbers': [4,5], 'health': 4, 'attack': '1NM', 'volatility': False, 'assignable_crew': [0, 0, 1], 
-                'assigned_crew': [], 'block_till_complete': [], 'send_infirmary': False, 'mercenary': False, 'existentialism': [False], 'return_scanner': False, 'stun': False, 'tactical_to_infirmary': False}]
-    
-    assign_crew(crew, active_threats, health, shield)
-
-if __name__ == '__main__':
-    main()

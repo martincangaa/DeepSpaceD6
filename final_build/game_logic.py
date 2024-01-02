@@ -1,55 +1,3 @@
-import time
-import random
-
-CREW_COMMANDER = 0
-CREW_TACTICAL = 1
-CREW_MEDICAL = 2
-CREW_SCIENCE = 3
-CREW_ENGINEERING = 4
-CREW_SCANNER = 5
-"""
-crew = [CREW_COMMANDER, CREW_COMANDER, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER]"""
-#add_threat
-#game_over
-#get_crew
-#activate_threats
-
-# added to input_output_user.py
-def game_over():
-    print("""
-         .d8888b.         d8888 888b     d888 8888888888 
-        d88P  Y88b       d88888 8888b   d8888 888        
-        888    888      d88P888 88888b.d88888 888        
-        888            d88P 888 888Y88888P888 8888888    
-        888  88888    d88P  888 888 Y888P 888 888        
-        888    888   d88P   888 888  Y8P  888 888        
-        Y88b  d88P  d8888888888 888   "   888 888        
-         "Y8888P88 d88P     888 888       888 8888888888 
-                                                 
-                                                 
-                                                 
-         .d88888b.  888     888 8888888888 8888888b.     
-        d88P" "Y88b 888     888 888        888   Y88b    
-        888     888 888     888 888        888    888    
-        888     888 Y88b   d88P 8888888    888   d88P    
-        888     888  Y88b d88P  888        8888888P"     
-        888     888   Y88o88P   888        888 T88b      
-        Y88b. .d88P    Y888P    888        888  T88b     
-         "Y88888P"      Y8P     8888888888 888   T88b 
-          """)
-    time.sleep(2)
-    ask_user = input("Do you want to keep playing?\n Yes\n No")
-    print(ask_user)    
-    while ask_user != 'Yes' or ask_user != 'No':
-        ask_user = input("")
-
-    if ask_user == "Yes":
-        main()
-    elif ask_user == 'no':
-        exit
-    
-
-# added to game_logic.py
 def add_threat(active_threats):
     #A few comments and points that I've jotted down in the making of this function
     #First of all, there are some threats which you can simply eliminate with tactical crew, but they can also be eliminated by assigning crew members
@@ -175,16 +123,7 @@ def add_threat(active_threats):
     active_threats.append(add_random_threat)
     list_of_threats.remove(add_random_threat)
 
-# added to game_logic.py
-def get_crew(crew):
-    crew_copy = crew.copy()
 
-    for member in crew_copy:
-        if member['infirmary'] == False and member['blocked'] == False:
-                member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
-    return crew_copy
-
-# added to game_logic.py
 def activate_threats(active_threats,crew, threat):
     throw_dice_result = throw_dice(1)
     damage_done = False
@@ -455,7 +394,80 @@ def activate_threats(active_threats,crew, threat):
             if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
                 threat['stun'] == False
 
-# added to game_logic.py
 def activate_threat(active_threats, shield, health):
     for threat in active_threats:
         activate_threats(threat, shield, health)
+
+def get_crew(crew):
+    crew_copy = crew.copy()
+
+    for member in crew_copy:
+        if member['infirmary'] == False and member['blocked'] == False:
+                member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
+    return crew_copy
+
+def check_scanners(crew):
+    n_of_scanners = 0
+
+    for crewmate in crew:
+        if crewmate["crew_type"] == 5:
+            n_of_scanners += 1
+    
+    while n_of_scanners >= 3:
+        add_threat(active_threats, threats)
+        n_of_scanners= free_scanners(crew, n_of_scanners)
+        
+        
+    print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
+
+def free_scanners(crew, n_of_scanners):
+    crewmate = 0
+    n_of_released_scanners = 0
+
+    while n_of_released_scanners < 3 and crewmate < len(crew):
+        if crew[crewmate]["crew_type"] == 5:
+            crew[crewmate]["crew_type"] = 6
+            crew[crewmate]["blocked"] = False
+            n_of_released_scanners += 1
+            n_of_scanners -= 1
+        crewmate += 1
+    return n_of_scanners
+
+def check_scanners(crew):
+    n_of_scanners = 0
+
+    for crewmate in crew:
+        if crewmate["crew_type"] == 5:
+            n_of_scanners += 1
+    
+    while n_of_scanners >= 3:
+        add_threat(active_threats, threats)
+        n_of_scanners= free_scanners(crew, n_of_scanners)
+        
+        
+    print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
+
+def check_difficulty(difficulty):
+    new_threats = threats[:]
+
+    if difficulty == "1":
+        cards_to_be_removed = 1
+    if difficulty == "2":
+        cards_to_be_removed = 3
+    if difficulty == "3":
+        cards_to_be_removed = 6
+
+    while cards_to_be_removed > 0:
+        for threat in new_threats:
+            if threat["name"] == "Don't Panic":
+                new_threats.remove(threat)
+                cards_to_be_removed -= 1
+                break
+
+    return new_threats
+
+def can_be_gathered(crew):
+    for crewmate in crew:
+        if crewmate['blocked'] == False and crewmate['infirmary'] == False and crewmate['crew_type'] != CREW_SCANNER:
+            return True
+    return False

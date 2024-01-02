@@ -29,7 +29,7 @@ crew = [{"crew_type":CREW_COMMANDER, "blocked": False, "infirmary": False},{"cre
 health = 8
 shield = 4
 
-# DONE
+# DONE added to input_output_user.py
 def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue',  dice_number='_',user_confirmation=False):
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
@@ -67,7 +67,7 @@ def print_interface(health, shield, active_threats, crew, message_to_continue='P
     if user_confirmation == True:
         user_confirmation()
 
-# DONE
+# DONE added to game_logic.py
 def check_scanners(crew):
     n_of_scanners = 0
 
@@ -82,7 +82,7 @@ def check_scanners(crew):
         
     print_interface(health, shield, 6, threats, crew, "Press (↵) to continue")
 
-# DONE
+# DONE added to game_logic.py
 def free_scanners(crew, n_of_scanners):
     crewmate = 0
     n_of_released_scanners = 0
@@ -96,7 +96,7 @@ def free_scanners(crew, n_of_scanners):
         crewmate += 1
     return n_of_scanners
 
-# DONE
+# DONE added to game_logic.py
 def check_difficulty(difficulty):
     new_threats = threats[:]
 
