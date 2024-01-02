@@ -2,10 +2,12 @@ import time
 import keyboard
 
 # loop --> returns difficulty level
+
 # DONE added to input_output_user.py
 def menu():
     """
     Shows the user the different levels that can be played inside the game, asks which of them is going to be played and writes it in a file.
+
 
     Returns:
         int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
@@ -27,7 +29,9 @@ def menu():
 
 # Checks if there is at least one crewmate that can be gathered back, returns true or false
 # A crewmate can't be gathered back if it is in the infirmary, it is a scanner or it is assigned to a Distracted threat
+
 # DONE added to game_logic.py
+
 def can_be_gathered(crew):
     for crewmate in crew:
         if crewmate['blocked'] == False and crewmate['infirmary'] == False and crewmate['crew_type'] != CREW_SCANNER:
@@ -36,11 +40,13 @@ def can_be_gathered(crew):
 
 # aux function that can be used to stop the execution of the program until the user decides
 # we will use it if we decide that this approach is better than do it inside the print_interface
+
 # DONE added to input_output_user.py
 def user_confirmation():
     keyboard.wait("enter")
 
 # added to input_output_user.py
+
 def win_game():
     print("""
 ██╗    ██╗██╗███╗   ██╗
@@ -53,6 +59,7 @@ def win_game():
     play_again = input('Do you want to play again? (Input "Yes" to play again, anything else to finish the game): ')
 
     if play_again == 'Yes':
+
         main()
 
 def create_threats():

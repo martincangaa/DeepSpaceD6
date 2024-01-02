@@ -12,7 +12,9 @@ CREW_ENGINEERING = 4
 CREW_SCANNER = 5
 NONE = 6
 
+
 #all functions have been added to user_input_output.py
+
 
 def throw_dice(n):
     """
@@ -78,7 +80,6 @@ def change_face(crewmember):
                 key_pressed = True
                 crewmember_copy['crew_type'] = CREW_ENGINEERING
                 break
-
         else:
             key_pressed = False
             
@@ -126,6 +127,7 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
 
     active_threats_copy = active_threats.copy()
 
+
     if crewmember['crew_type'] == CREW_COMMANDER:
         name = 'Commander'
     elif crewmember['crew_type'] == CREW_TACTICAL:
@@ -136,7 +138,6 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
         name = 'Science'
     elif crewmember['crew_type'] == CREW_ENGINEERING:
         name = 'Engineering'
-
     for threat in active_threats:
         if len(threat['assigned_crew']) < len(threat['assignable_crew']) and crewmember['crew_type'] in threat['assignable_crew']:
             
@@ -147,6 +148,7 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
         
     #print_assign(health, shield, active_threats_copy, crew, 'Press (↵) to escape')
     print(f"Select the threat you want to assign the {name} to:\n{assignable_string}")
+
     
     while True:
         input = keyboard.read_event().name
@@ -157,6 +159,7 @@ def assign_crew_threat(crewmember, active_threats, crew, health, shield):
                 break
     
     return active_threats_copy
+
 
 def external_threats(active_threats):
     """
@@ -246,6 +249,7 @@ def are_scanners(crew):
             return True
     return False
 
+
 def stun_threat(active_threats):
     threat_stunned = False
     active_threats_list = ""
@@ -270,7 +274,9 @@ def stun_threat(active_threats):
 
     return active_threats
 
+
 def show_options(crewmember, crew, active_threats, health, shield, first_attack):
+
     """
     Displays options for a crewmember based on their crew type.
     
@@ -375,8 +381,6 @@ def show_options(crewmember, crew, active_threats, health, shield, first_attack)
                         
                         else:
                             key_pressed2 = False
-                    
-
                     break
             
             elif keyboard.is_pressed('2'):
@@ -399,7 +403,6 @@ def show_options(crewmember, crew, active_threats, health, shield, first_attack)
 
             else:
                 key_pressed = False
-
         return crew_copy, active_threats_copy, health, shield, first_attack
 
     if crewmember['crew_type'] == CREW_TACTICAL:
@@ -587,10 +590,7 @@ def crew_status(crew):
         tuple: A tuple containing the list of active crewmates and the status message.
     """
 
-
     crew_names = ['COMMANDER', 'TACTICAL', 'MEDICAL', 'SCIENTIFIC', 'ENGINEER', 'SCANNER', 'EMPTY']
-
-
     message = ''
 
     for crewmate in crew:
@@ -653,7 +653,7 @@ def assign_crew(crew, active_threats, health, shield):
     first_attack = False
 
     time.sleep(0.1)
-
+    
     while not keyboard.is_pressed('enter'):
 
         if keyboard.is_pressed('1'):
@@ -666,6 +666,7 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[0]['blocked'] == False and crew_copy[0]['infirmary'] == False:
                     key_pressed = True
                     crew_action_1 = True
+
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[0], crew_copy, active_threats_copy, health, shield, first_attack)
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
 
@@ -683,10 +684,11 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[1]['blocked'] == False and crew_copy[1]['infirmary'] == False:
                     key_pressed = True
                     crew_action_2 = True
+
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[1], crew_copy, active_threats_copy, health, shield, first_attack)
 
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
-
+                    
                 else:
                     print('Choose a valid option')
                     key_pressed = True
@@ -701,10 +703,11 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[2]['blocked'] == False and crew_copy[2]['infirmary'] == False:
                     key_pressed = True
                     crew_action_3 = True
+
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[2], crew_copy, active_threats_copy, health, shield, first_attack)
 
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
-
+                    
                 else:
                     print('Choose a valid option')
                     key_pressed = True
@@ -719,6 +722,7 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[3]['blocked'] == False and crew_copy[3]['infirmary'] == False:
                     key_pressed = True
                     crew_action_4 = True
+                    
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[3], crew_copy, active_threats_copy, health, shield, first_attack)
 
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
@@ -737,10 +741,11 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[4]['blocked'] == False and crew_copy[4]['infirmary'] == False:
                     key_pressed = True
                     crew_action_5 = True
+
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[4], crew_copy, active_threats_copy, health, shield, first_attack)
 
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
-  
+
                 else:
                     print('Choose a valid option')
                     key_pressed = True
@@ -755,6 +760,7 @@ def assign_crew(crew, active_threats, health, shield):
                 elif crew_copy[5]['blocked'] == False and crew_copy[5]['infirmary'] == False:
                     key_pressed = True
                     crew_action_6 = True
+
                     crew_copy, active_threats_copy, health, shield, first_attack = show_options(crew_copy[5], crew_copy, active_threats_copy, health, shield, first_attack)
 
                     print_assign(health, shield, active_threats_copy, crew_copy, 'Press (↵) to escape')
@@ -765,7 +771,7 @@ def assign_crew(crew, active_threats, health, shield):
 
         else:
             key_pressed = False
-        
+
     return crew_copy, active_threats_copy, health, shield
     
 def main():
@@ -775,6 +781,7 @@ def main():
     # Initialize variables
     health = 8
     shield = 1
+    
     crew = [
         {'crew_type': CREW_COMMANDER, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_TACTICAL, 'blocked': False, 'infirmary': False},
@@ -782,6 +789,7 @@ def main():
         {'crew_type': CREW_SCIENCE, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_ENGINEERING, 'blocked': False, 'infirmary': False},
         {'crew_type': CREW_SCANNER, 'blocked': True, 'infirmary': False}]
+    
     active_threats = [{'name': 'Hijackers', 'description': '-2 Hull', 'dice_numbers': [4,5], 'health': 4, 'attack': '1NM', 'volatility': False, 'assignable_crew': [0, 0, 1], 
                 'assigned_crew': [], 'block_till_complete': [], 'send_infirmary': False, 'mercenary': False, 'existentialism': [False], 'return_scanner': False, 'stun': False, 'tactical_to_infirmary': False}]
     

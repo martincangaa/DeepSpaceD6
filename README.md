@@ -30,4 +30,6 @@ DeepSpaceD6 is a Python-based terminal game that brings the excitement of the bo
 
 ## License
 
+
+
 DeepSpaceD6 is licensed under the [MIT License](LICENSE).
