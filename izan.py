@@ -85,7 +85,7 @@ def print_interface(health, shield, active_threats, crew, message_to_continue = 
     if user_confirmation == True:
         user_confirmation()
 
-# DONE
+# DONE added to game_logic.py
 def check_scanners(crew):
     """
     Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
@@ -108,12 +108,11 @@ def check_scanners(crew):
         add_threat(active_threats, threats)
         n_of_scanners= free_scanners(crew, n_of_scanners)
         
-        
     print_interface(health, shield, threats, crew, "Press (↵) to continue")
 
     return crew_copy
 
-# DONE
+# DONE added to game_logic.py
 def free_scanners(crew, n_of_scanners):
     """
     Changes the crew type of three crewmates of type scanner
