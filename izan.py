@@ -1,4 +1,4 @@
-
+import random
 from collections import Counter
 
 no_health_threat = 15
@@ -151,24 +151,25 @@ def check_difficulty(filename):
         new_threats (array): An array similar to the threats one but without the corresponding Don't Panic cards
     """
     new_threats = threats[:]
+    dont_panic = {'name': "Don't Panic", 'description': 'nothing happens', 'dice_numbers': [], 'health': 15, 'attack': '',  'assignable_crew': [], 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
 
     f = open(filename, "r")
     difficulty = f.readline().strip() 
     f.close()
 
     if difficulty == "1":
-        cards_to_be_removed = 1
+        cards_to_be_added = 5
     if difficulty == "2":
-        cards_to_be_removed = 3
+        cards_to_be_added = 2
     if difficulty == "3":
-        cards_to_be_removed = 6
+        cards_to_be_added = 0
 
-    while cards_to_be_removed > 0:
-        for threat in new_threats:
-            if threat["name"] == "Don't Panic":
-                new_threats.remove(threat)
-                cards_to_be_removed -= 1
-                break
+    while cards_to_be_added > 0:
+        random_index = random.randint(0, len(new_threats))
+        new_threats.insert(random_index, dont_panic)
+        cards_to_be_added -= 1
+
 
     return new_threats
 
@@ -204,7 +205,7 @@ def main():
     #print(new_threats)
     #print_interface(health, shield, threats, crew, "Press (↵) to continue")
     #check_scanners(crew)
-    #print(check_threats(active_threats))
+    print(check_threats(active_threats))
 
 if __name__ == "__main__":
     main()
