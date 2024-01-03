@@ -41,7 +41,10 @@ def print_interface(health, shield, active_threats, crew, message_to_continue='P
     active_threats_str = ""
 
     for threat in active_threats:
-        threat_info = "- " + str(threat["health"]) + " | " + str(threat["name"]) + " | " + str(threat["description"]) + " | " + str(threat["assignable_crew"]) + " | " + str(threat["assigned_crew"]) 
+        threat_health = str(threat["health"])
+        if threat_health == "15":
+            threat_health = "◬"
+        threat_info = "- " + threat_health + " | " + str(threat["name"]) + " | " + str(threat["description"]) + " | " + str(threat["assignable_crew"]) + " | " + str(threat["assigned_crew"]) 
         remaining_spaces = 92-len(threat_info)
         str1 = " "* remaining_spaces + "║" + "\n║   "
         active_threats_str += threat_info + str1
