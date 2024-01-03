@@ -281,7 +281,6 @@ def attack_threat(active_threats, first_attack):
     """
     active_threats_copy = active_threats.copy()
 
-    threat_attacked = False
     external_threats_options = ''
     for i in range(len(active_threats_copy)):
         if active_threats_copy[i]['health'] != 15:
@@ -291,22 +290,28 @@ def attack_threat(active_threats, first_attack):
     print(external_threats_options)
 
     time.sleep(0.1)
+    
+    key_pressed = True
 
     while True:
-        for i in range(len(active_threats)):
-            if keyboard.is_pressed(str(i+1)):
-                if active_threats[i]['health'] == 15:
+
+        input = keyboard.read_event().name
+
+        if input.isnumeric() and int(input) < len(active_threats) and int(input) >= 0 and not key_pressed:
+            key_pressed = True
+            i = int(input) - 1
+            if active_threats[i]['health'] == 15:
                     print('Choose an external threat')
+            else:
+                if not first_attack:
+                    active_threats[i]['health'] -= 1
+                    first_attack = True
                 else:
-                    if not first_attack:
-                        active_threats[i]['health'] -= 1
-                        first_attack = True
-                    else:
-                        active_threats[i]['health'] -= 2
-                    threat_attacked = True
-                    break
-        if threat_attacked:
-            break
+                    active_threats[i]['health'] -= 2
+                
+                break
+        else:
+            key_pressed = False
             
 
     return active_threats_copy, first_attack
