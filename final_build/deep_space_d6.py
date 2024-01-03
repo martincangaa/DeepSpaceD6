@@ -80,7 +80,7 @@ def main():
 
         io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True)
 
-        dice_number, crew = gl.iterate_through_threats(active_threats, shield, health)
+        dice_number, crew, active_threats, health, shield = gl.iterate_through_threats(active_threats, crew, health, shield)
         
         dice_number_str = str(dice_number)
 
