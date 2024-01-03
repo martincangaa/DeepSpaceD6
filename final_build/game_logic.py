@@ -1,4 +1,5 @@
 import random
+import input_output_user as io
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -491,8 +492,6 @@ def check_scanners(crew, active_threats, threats):
     while n_of_scanners >= 3:
         add_threat(active_threats, threats)
         n_of_scanners= free_scanners(crew, n_of_scanners)
-        
-    io.print_interface(health, shield, threats, crew, dice_number=dice_number_str,message_to_continue="Press (↵) to continue", user_confirmation =True)
 
     return crew_copy
 
@@ -508,24 +507,25 @@ def check_difficulty(threats):
         new_threats (array): An array similar to the threats one but without the corresponding Don't Panic cards
     """
     new_threats = threats[:]
+    dont_panic = {'name': "Don't Panic", 'description': 'nothing happens', 'dice_numbers': [], 'health': 15, 'attack': '',  'assignable_crew': [], 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
 
     f = open('difficulty.txt', "r")
-    difficulty = f.readline().strip()
+    difficulty = f.readline().strip() 
     f.close()
 
     if difficulty == "1":
-        cards_to_be_removed = 1
+        cards_to_be_added = 5
     if difficulty == "2":
-        cards_to_be_removed = 3
+        cards_to_be_added = 2
     if difficulty == "3":
-        cards_to_be_removed = 6
+        cards_to_be_added = 0
 
-    while cards_to_be_removed > 0:
-        for threat in new_threats:
-            if threat["name"] == "Don't Panic":
-                new_threats.remove(threat)
-                cards_to_be_removed -= 1
-                break
+    while cards_to_be_added > 0:
+        random_index = random.randint(0, len(new_threats))
+        new_threats.insert(random_index, dont_panic)
+        cards_to_be_added -= 1
+
 
     return new_threats
 

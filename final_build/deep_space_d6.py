@@ -37,8 +37,6 @@ def main():
 
     while True:
 
-        io.print_interface(health, shield, active_threats, crew)
-
         #Conditions to loose
         if health <= 0 or gl.can_be_gathered(crew) == False: 
             win = False # determine the screen to be printed after ending the loop (see if-statement out of the loop)
@@ -46,10 +44,11 @@ def main():
 
         crew = gl.get_crew(crew)
 
-        io.print_interface(health, shield, active_threats, crew)
+        io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True)
 
         crew = gl.check_scanners(crew, active_threats, threats)
         
+        io.print_interface(health, shield, active_threats, crew,"Press (↵) to continue", True, dice_number_str)
         # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
         # will check if the active_threats can be solved with any current crewmate, if it is possible to get a crewmate out of the infirmary...
         # all the available options will be shown to the user when they select a crewmate and then they will be able to choose one, whathever they do will probably have consequences
@@ -59,7 +58,7 @@ def main():
 
         active_threats = gl.check_threats(active_threats, crew)
 
-        io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", user_confirmation =True)
+        io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", True, dice_number_str)
         
             # for every repetition inside the assign_crew we will use at least this:
             # n_external_defeated += check_threats(active_threats)
@@ -72,7 +71,7 @@ def main():
 
         active_threats, threats, crew = gl.add_threat(threats, active_threats)
 
-        io.print_interface(health, shield, active_threats, crew, user_confirmation = True)
+        io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True)
 
         gl.activate_threats(active_threats, crew)
 
@@ -80,7 +79,7 @@ def main():
         
         dice_number_str = str(dice_number)
 
-        io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", user_confirmation = True, dice_number = str(dice_number))
+        io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
 
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called

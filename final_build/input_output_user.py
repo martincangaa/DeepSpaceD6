@@ -35,7 +35,7 @@ def menu():
 def user_confirmation():
     keyboard.wait("enter")
 
-def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue',  dice_number='_',user_confirmation=False):
+def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)
@@ -69,6 +69,7 @@ def print_interface(health, shield, active_threats, crew, message_to_continue='P
 ║                                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝         
            """)
+    
     if user_confirmation == True:
         user_confirmation()
 
