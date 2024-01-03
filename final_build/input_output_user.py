@@ -689,25 +689,25 @@ def crew_status(crew):
 
     message = ''
 
-    for crewmate in crew:
+    for i in range(len(crew)):
 
-        if crewmate['blocked'] == False and crewmate['infirmary'] == False:
+        if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
             # looking for the unblocked crewmates to add them to the message and to an array of active crew
-            for i in range(len(crew_names)):
-                if i == crewmate['crew_type']:
-                    message += crew_names[i] + ' (' + str(crew.index(crewmate)+1) + ')   '
+            for j in range(len(crew_names)):
+                if j == crew[i]['crew_type']:
+                    message += crew_names[j] + ' (' + str(i+1) + ')   '
 
-        if crewmate['blocked'] == True:
+        if crew[i]['blocked'] == True:
             # looking for the blocked crewmates and adding them to the message indicating they are doing some stuff
-            for i in range(len(crew_names)):
-                if i == crewmate['crew_type']:
-                    message += crew_names[i] + ' (BLOCKED)   '
+            for j in range(len(crew_names)):
+                if j == crew[i]['crew_type']:
+                    message += crew_names[j] + ' (BLOCKED)   '
         
-        if crewmate['infirmary'] == True:
+        if crew[i]['infirmary'] == True:
             # looking for the injured crewmates and adding them to the message indicating they are injured
-            for i in range(len(crew_names)):
-                if i == crewmate['crew_type']:
-                    message += crew_names[i] + ' (INFIRMARY)   '
+            for j in range(len(crew_names)):
+                if j == crew[i]['crew_type']:
+                    message += crew_names[j] + ' (INFIRMARY)   '
         
     return message
 
