@@ -1,5 +1,4 @@
 import random
-import input_output_user as io
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -134,16 +133,31 @@ def create_threats():
     return list_of_threats
 
 
-def add_threat(list_of_threats, crew):
-    add_random_threat = random.choice(list_of_threats)
-    activate_threats_copy = activate_threats.copy()
-    activate_threats_copy.append(add_random_threat)
-    list_of_threats.remove(add_random_threat)
-    if add_random_threat == 'Distracted':
-        for member in crew:
-            i = random.randint(0,5)
-            if member[i]['blocked'] == False and member[i]['infirmary'] == False:
+def add_threat(active_threats, threats, crew):
+    
+    active_threats_copy = active_threats.copy()
+    threats_copy = threats.copy()
+    crew_copy = crew.copy()
+
+    random_threat = random.choice(threats_copy)
+    
+    active_threats_copy.append(random_threat)
+    threats_copy.remove(random_threat)
+    
+    if random_threat == 'Distracted':
+        
+        random_list = [0,1,2,3,4,5]
+        
+        while random_list != []:
+
+            i = random.choice(random_list)
+            random_list.remove(i)
+        
+            if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                 member[i]['blocked'] == True and member[i]['infimary'] == True
+                break
+    
+    return active_threats_copy, threats_copy, crew_copy
 
 def activate_threats(active_threats,crew, threat, throw_dice_result):
     damage_done = False
@@ -405,16 +419,31 @@ def get_crew(crew):
                 member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
     return crew_copy
 
-def check_scanners(crew):
+def check_scanners(crew, active_threats, threats):
+    """
+    Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
+    and then frees those scanners used to spawn the threat.
+
+    Args:
+        crew (array): An array containing the crewmates
+
+    Returns: 
+        crew_copy (array): An array containing the updated crewmates
+    """
+    crew_copy = crew[:]
     n_of_scanners = 0
 
-    for crewmate in crew:
+    for crewmate in crew_copy:
         if crewmate["crew_type"] == 5:
             n_of_scanners += 1
     
     while n_of_scanners >= 3:
         add_threat(active_threats, threats)
         n_of_scanners= free_scanners(crew, n_of_scanners)
+        
+    print_interface(health, shield, threats, crew, "Press (↵) to continue")
+
+    return crew_copy
 
 def free_scanners(crew, n_of_scanners):
     """
@@ -452,7 +481,6 @@ def check_scanners(crew, active_threats, threats):
     Returns: 
         crew_copy (array): An array containing the updated crewmates
     """
-
     crew_copy = crew[:]
     n_of_scanners = 0
 
@@ -463,6 +491,8 @@ def check_scanners(crew, active_threats, threats):
     while n_of_scanners >= 3:
         add_threat(active_threats, threats)
         n_of_scanners= free_scanners(crew, n_of_scanners)
+        
+    io.print_interface(health, shield, threats, crew, dice_number=dice_number_str,message_to_continue="Press (↵) to continue", user_confirmation =True)
 
     return crew_copy
 
@@ -479,8 +509,8 @@ def check_difficulty(threats):
     """
     new_threats = threats[:]
 
-    f = open('dificulty', "r")
-    difficulty = f.readline().strip() 
+    f = open('difficulty.txt', "r")
+    difficulty = f.readline().strip()
     f.close()
 
     if difficulty == "1":

@@ -24,11 +24,11 @@ def menu():
     print("3 - Hard: 6 Don't panic cards are substracted from the threads")
 
     difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
-    while not (difficulty == '1' or difficulty == '2' or difficulty == '3'):
+    while difficulty != '1' and difficulty != '2' and difficulty != '3':
         print('Not valid level')
         difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
-    file = open('difficulty', 'w')
+    file = open('difficulty.txt', 'w')
     file.write(str(difficulty))
     file.close()
 

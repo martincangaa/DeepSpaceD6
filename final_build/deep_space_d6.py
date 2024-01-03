@@ -30,9 +30,10 @@ def main():
     threats = gl.create_threats()
     active_threats = []
     n_external_defeated = 0 # the number of enemies defeated
-
+    dice_number_str = '_'
     
     io.menu()
+    threats = gl.check_difficulty(threats)
 
     while True:
 
@@ -46,12 +47,9 @@ def main():
         crew = gl.get_crew(crew)
 
         io.print_interface(health, shield, active_threats, crew)
+
+        crew = gl.check_scanners(crew, active_threats, threats)
         
-
-        gl.check_scanners(crew)
-
-        io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", user_confirmation =True)
-
         # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
         # will check if the active_threats can be solved with any current crewmate, if it is possible to get a crewmate out of the infirmary...
         # all the available options will be shown to the user when they select a crewmate and then they will be able to choose one, whathever they do will probably have consequences
@@ -59,11 +57,10 @@ def main():
         
         crew, active_threats, health, shield = io.assign_crew(crew, active_threats, health, shield)
 
-        threats = gl.check_threats(active_threats, crew)
+        active_threats = gl.check_threats(active_threats, crew)
 
         io.print_interface(health, shield, 6, threats, crew, "Press (↵) to continue", user_confirmation =True)
-        # |
-        # |-> 
+        
             # for every repetition inside the assign_crew we will use at least this:
             # n_external_defeated += check_threats(active_threats)
             # print_interface
@@ -73,7 +70,7 @@ def main():
             win = True  # determine the screen to be printed after ending the loop (see if-statement out of the loop)
             break   # get out of the while
 
-        active_threats = gl.add_threat(threats, active_threats)
+        active_threats, threats, crew = gl.add_threat(threats, active_threats)
 
         io.print_interface(health, shield, active_threats, crew, user_confirmation = True)
 
