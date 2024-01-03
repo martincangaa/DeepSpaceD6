@@ -1,4 +1,5 @@
 import random
+from collections import Counter
 import input_output_user as io
 
 CREW_COMMANDER = 0
@@ -160,7 +161,7 @@ def add_threat(active_threats, threats, crew):
     
     return active_threats_copy, threats_copy, crew_copy
 
-def activate_threats(active_threats,crew, threat, throw_dice_result):
+def activate_threats(active_threats, crew, threat, throw_dice_result):
     damage_done = False
     activated_threat = False
     if not threat['mission']:

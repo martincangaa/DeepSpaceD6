@@ -2,6 +2,7 @@ import random
 import keyboard
 import os
 import time
+from collections import Counter
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -32,33 +33,31 @@ def menu():
     file.write(str(difficulty))
     file.close()
 
-def user_confirmation():
-    keyboard.wait("enter")
-
 def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
+    os.system("cls")
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
     shield_percentage = int(shield/4*100)
     active_threats_str = ""
 
     for threat in active_threats:
-        threat_info = "- " + str(threat["health"]) + " | " + str(threat["name"]) + " | " + str(threat["description"]) 
+        threat_info = "- " + str(threat["health"]) + " | " + str(threat["name"]) + " | " + str(threat["description"]) + " | " + str(threat["assignable_crew"]) + " | " + str(threat["assigned_crew"]) 
         remaining_spaces = 92-len(threat_info)
         str1 = " "* remaining_spaces + "║" + "\n║   "
         active_threats_str += threat_info + str1
 
     print(f"""
 ╔═══════════════════════════════════════════════════════════════════════════════════════════════╗   
-║                                                                                               ║   C = Commander      T = Tactical
-║                             .-. .-. .-. .-.   .-. .-. .-. .-. .-.                             ║   M = Medical        S = Science 
-║                             |  )|-  |-  |-'   `-. |-' |-| |   |-                              ║   E = Engineering    $ = Scanner         / = None
+║                                                                                               ║   C = Commander (0)     T = Tactical (1)
+║                             .-. .-. .-. .-.   .-. .-. .-. .-. .-.                             ║   M = Medical (2)        S = Science (3) 
+║                             |  )|-  |-  |-'   `-. |-' |-| |   |-                              ║   E = Engineering (4)    $ = Scanner         / = None
 ║                             `-' `-' `-' '     `-' '   ` ' `-' `-'                             ║   
 ║                             -------------------------------------                             ║   B = Blocked        I = Infirmary       F = Free
 ║                                                                                               ║
-║                                                                                               ║
-║                         ___                        Health: {health_percentage}% {"███" * health}{" "*(33-health*3-len(str(health_percentage)))}║
+║                                                                                               ║   ◬ = Internal Threat
+║                         ___                        Health: {str(health_percentage) + "%" + " "*(4-len(str(health_percentage))) + "███"*health + " "*(32-health*3-2)}║   Active Threats Structure --> Health | Name | Description | Assignable crew | Assigned crew
 ║     Active Threats:    |_{dice_number}_|                                                                  ║
-║   -----------------------------                    Shield: {shield_percentage}% {"███" * shield}{" "*(33-shield*3-len(str(shield_percentage)))}║
+║   -----------------------------                    Shield: {str(shield_percentage) + "%" + " "*(4-len(str(shield_percentage))) + "███"*shield + " "*(32-shield*3-2)}║
 ║                                                                                               ║
 ║   {active_threats_str}                                                                                            ║
 ║                                                                                               ║
@@ -70,8 +69,8 @@ def print_interface(health, shield, active_threats, crew, message_to_continue='P
 ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝         
            """)
     
-    if user_confirmation == True:
-        user_confirmation()
+    if user_confirmation:
+        keyboard.wait("enter")
 
 def game_over():
     print("""
