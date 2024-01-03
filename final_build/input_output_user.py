@@ -297,7 +297,7 @@ def attack_threat(active_threats, first_attack):
 
         input = keyboard.read_event().name
 
-        if input.isnumeric() and int(input) < len(active_threats) and int(input) >= 0 and not key_pressed:
+        if input.isnumeric() and int(input) <= len(active_threats) and int(input) >= 0 and not key_pressed:
             key_pressed = True
             i = int(input) - 1
             if active_threats[i]['health'] == 15:
