@@ -3,6 +3,7 @@ import keyboard
 import os
 import time
 from collections import Counter
+import deep_space_d6 as dsd
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -104,7 +105,7 @@ def game_over():
         ask_user = input("")
 
     if ask_user == "Yes":
-        main()
+        dsd.main()
     elif ask_user == 'no':
         exit
 

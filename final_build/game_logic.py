@@ -179,7 +179,9 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
     #damage_done 
     damage_done = False
     activated_threat = False
+    
     if not threat['mission']:
+        
         if throw_dice_result in threat['dice_numbers']:
             #so as to check if the threat is stunned
             if threat['attack'][1:] == 'NM' and threat['stun'] == False:
@@ -192,20 +194,27 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
             if threat['attack'][1:] == 'DS' and threat['stun'] == False:
                 shield = 0
                 health -= int(threat['attack'][0:1])
+    
     if threat['mission']:
+        
         if throw_dice_result in threat['dice_numbers']:
+            
             if threat['name'] == 'Meteoroid' and threat['stun'] == False:
                 shield -= int(threat['attack'][0:1])
+                
                 if shield <0:
                     health -= abs(shield)
                     shield=0
+                
                 damage_done = True
                 activated_threat = True
+                
                 if threat['health'] == 0:
                     shield -= 5
                 if shield <0:
                     health -= abs(shield)
                     shield=0
+            
             if threat['name'] == 'Meteoroid' and threat['stun'] == True:
                 threat['stun'] = False
 
@@ -357,7 +366,10 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
 
             if threat['name'] == 'Distracted' and threat['stun'] == False:
                 activated_threat = True
-                for member in crew:
+
+                random_list = [0,1,2,3,4,5] # little tricks
+
+                for i in range(len(crew)):
                     i = random.randint(0,5)
                     if member[i]['blocked'] == True and member[i]['infirmary'] == True:
                         member[i]['blocked'] = False  
@@ -389,13 +401,13 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
             if threat['name'] == 'Nebula' and threat['stun'] == True:
                 threat['stun'] = False
             
-            if threat['mercenary'] == 'Mercenary' and activated_threat == False and threat['stun'] == False :
+            if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == False :
                 shield -= int(threat['attack'][0:1])
                 if shield <0:
                     health -= abs(shield)
                     shield=0
             
-            if threat['mercenary'] == 'Mercenary' and activated_threat == False and threat['stun'] == True :
+            if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == True :
                 threat['stun'] = False
 
             if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == False:
@@ -406,6 +418,7 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
             
             if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
                 threat['stun'] = False
+    
     return crew, active_threats, health, shield
 
 def throw_dice(n):
@@ -425,9 +438,16 @@ def throw_dice(n):
 
 def iterate_through_threats(active_threats, crew, health, shield):
     throw_dice_result = throw_dice(1)
+
+    io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
+
+    new_health = health
+    new_shield = shield
+
     for threat in active_threats:
-        crew, active_threats, health, shield = activate_threats(active_threats, crew, threat, throw_dice_result, health, shield)      
-    return throw_dice_result, crew, active_threats, health, shield
+        crew, active_threats, new_health, new_shield = activate_threats(active_threats, crew, threat, throw_dice_result[0], new_health, new_shield)    
+    
+    return throw_dice_result, crew, active_threats, new_health, new_shield
 
 def get_crew(crew):
     crew_copy = crew.copy()
