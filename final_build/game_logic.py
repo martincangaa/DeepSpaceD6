@@ -129,7 +129,7 @@ def create_threats():
     
     list_of_threats = [flagship, solar_winds, intercepter, scouting_ship, raiders, boarding_ship, space_pirates, raiders2, raiders2, raiders3,
                        meteoroid, drone, bounty_ship, bomber, space_pirates2, intercepter_x, space_pirates3, drone2, hijackers, corsair, friendly_fire, cosmic_existentialism,
-                       nebula, mercernary, cloaked_threats, assault_cruiser, distracted, time_warp, bomber2, boost_morale, panel_explosion, assault_cruiser2, pandemic, invaders,
+                       nebula, mercenary, cloaked_threats, assault_cruiser, distracted, time_warp, bomber2, boost_morale, panel_explosion, assault_cruiser2, pandemic, invaders,
                        bomber3, comms_offlime, robot_uprising]
     
     return list_of_threats
@@ -206,7 +206,7 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
                 
                 if threat['health'] <= 0:
                     shield -= 5
-                    if shield <0:
+                    if shield <= 0:
                         health -= abs(shield)
                         shield=0
             
