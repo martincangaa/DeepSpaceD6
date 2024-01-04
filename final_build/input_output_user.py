@@ -36,8 +36,10 @@ def menu():
 
 def print_interface(phase, health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
     clear_terminal()
+
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
+    
     if health_percentage < 0:
         health_percentage = 0
     shield_percentage = int(shield/4*100)

@@ -63,7 +63,7 @@ def main():
         # (crewmate might me blocked when selecting one of it's possible actions for example)
         crew, active_threats, health, shield = io.assign_crew(crew, active_threats, health, shield)
 
-        active_threats = gl.check_threats(active_threats, crew)
+        active_threats, crew = gl.check_threats(active_threats, crew)
 
         io.print_interface("Checking threats", health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
         
