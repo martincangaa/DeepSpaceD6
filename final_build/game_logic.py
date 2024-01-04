@@ -439,7 +439,7 @@ def throw_dice(n):
 def iterate_through_threats(active_threats, crew, health, shield):
     throw_dice_result = throw_dice(1)
 
-    io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
+    io.print_interface("Roll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
 
     new_health = health
     new_shield = shield
@@ -457,32 +457,6 @@ def get_crew(crew):
                 member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
                 if member["crew_type"] == CREW_SCANNER:
                     member["blocked"] = True
-    return crew_copy
-
-def check_scanners(crew, active_threats, threats, health, shield):
-    """
-    Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
-    and then frees those scanners used to spawn the threat.
-
-    Args:
-        crew (array): An array containing the crewmates
-
-    Returns: 
-        crew_copy (array): An array containing the updated crewmates
-    """
-    crew_copy = crew[:]
-    n_of_scanners = 0
-
-    for crewmate in crew_copy:
-        if crewmate["crew_type"] == 5:
-            n_of_scanners += 1
-    
-    while n_of_scanners >= 3:
-        add_threat(active_threats, threats, crew)
-        n_of_scanners, crew_copy= free_scanners(crew, n_of_scanners)
-        
-    print_interface(health, shield, threats, crew, "Press (↵) to continue")
-
     return crew_copy
 
 def free_scanners(crew, n_of_scanners):
@@ -529,10 +503,10 @@ def check_scanners(crew, active_threats, threats):
             n_of_scanners += 1
     
     while n_of_scanners >= 3:
-        add_threat(active_threats, threats, crew)
-        n_of_scanners= free_scanners(crew, n_of_scanners)
+        active_threats, threats, crew_copy = add_threat(active_threats, threats, crew)
+        n_of_scanners, crew_copy = free_scanners(crew, n_of_scanners)
 
-    return crew_copy
+    return crew_copy, active_threats, threats
 
 def check_difficulty(threats):
     """

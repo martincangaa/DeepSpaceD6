@@ -34,7 +34,7 @@ def menu():
     file.write(str(difficulty))
     file.close()
 
-def print_interface(health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
+def print_interface(phase, health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
     clear_terminal()
     initials = ["C", "T", "M", "S", "E", "$", "/"]
     health_percentage = int(health/8*100)
@@ -74,7 +74,7 @@ def print_interface(health, shield, active_threats, crew, message_to_continue='P
 ║                                    `-' `-' `-' '     `-' '   ` ' `-' `-'                                   ║   
 ║                                    -------------------------------------                                   ║   B = Blocked        I = Infirmary       F = Free
 ║                                                                                                            ║
-║                                                                                                            ║   ◬ = Internal Threat
+║    | Phase: {phase + " |" + (93 - len(phase)) * " "}║   ◬ = Internal Threat
 ║                         ___                            Health: {str(health_percentage) + "%" + " "*(4-len(str(health_percentage))) + "███"*health + " "*(41-health*3-2)}║                             |Active Threats Structure|
 ║     Active Threats:    |_{dice_number}_|                                                                               ║   Health | Name | Dices | Description | Assignable crew | Assigned crew | Stunned
 ║   -----------------------------                        Shield: {str(shield_percentage) + "%" + " "*(4-len(str(shield_percentage))) + "███"*shield + " "*(41-shield*3-2)}║
@@ -731,7 +731,7 @@ def crew_status(crew):
 def print_assign(health, shield, active_threats, crew_copy, message_to_continue, dice_number=' ', message_2 = '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'):
 
     clear_terminal()
-    print_interface(health, shield, active_threats, crew_copy, message_to_continue)
+    print_interface("Assigning crew", health, shield, active_threats, crew_copy, message_to_continue)
     message = crew_status(crew_copy)
     message += message_2
     print(message)
