@@ -39,7 +39,7 @@ def create_threats():
     raiders3 = {'name': 'Raiders', 'description': '-2 Hull Ignore shields', 'dice_numbers': [4,6], 'health': 2, 'attack': '2IG',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
     
-    boarding_ship = {'name': 'Boarding Ship', 'description': '-2 Hull Can be blocked if you use one tactial unit, but it gets sent to infirmary', 'dice_numbers': [3, 4], 'health': 4, 'attack': '2NM',  'assignable_crew': [CREW_TACTICAL, CREW_TACTICAL], 
+    boarding_ship = {'name': 'Boarding Ship', 'description': '-2 Hull, Can be blocked if you use one T, but it gets sent to I', 'dice_numbers': [3, 4], 'health': 4, 'attack': '2NM',  'assignable_crew': [CREW_TACTICAL, CREW_TACTICAL], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
     #space_pirates is repeated 3 times thorough the game
     space_pirates = {'name': 'Space Pirates', 'description': '-2 Hull', 'dice_numbers': [1, 3], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
@@ -85,7 +85,7 @@ def create_threats():
     friendly_fire = {'name': 'Friendly Fire', 'description': 'All tactical crew gets sent to infirmary', 'dice_numbers': [], 'health': no_health_threat, 'attack': '',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
 
-    cosmic_existentialism = {'name': 'Cosmic Existentialism', 'description': 'Must be completed before assigning any other scientific crew', 'dice_numbers': [], 'health': no_health_threat, 'attack': '',  'assignable_crew': [CREW_SCIENCE], 
+    cosmic_existentialism = {'name': 'Cosmic Existentialism', 'description': 'Must be completed before assigning any other S', 'dice_numbers': [], 'health': no_health_threat, 'attack': '',  'assignable_crew': [CREW_SCIENCE], 
                 'assigned_crew': [], 'block_till_complete': [3], 'mission': True, 'stun': False}
 
     nebula = {'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
@@ -381,7 +381,7 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
 
             if threat['name'] == 'Cloaked Threats' and threat['stun'] == False:
                 activated_threat = True
-                iterate_through_threats(threat, shield, health)
+                iterate_through_threats(active_threats, crew, health, shield)
                 
             if threat['name'] == 'Cloaked Threats' and threat['stun'] == True:
                 threat['stun'] = False
@@ -447,7 +447,7 @@ def iterate_through_threats(active_threats, crew, health, shield):
     for threat in active_threats:
         crew, active_threats, new_health, new_shield = activate_threats(active_threats, crew, threat, throw_dice_result[0], new_health, new_shield)    
     
-    return throw_dice_result, crew, active_threats, new_health, new_shield
+    return throw_dice_result[0], crew, active_threats, new_health, new_shield
 
 def get_crew(crew):
     crew_copy = crew.copy()
@@ -455,9 +455,11 @@ def get_crew(crew):
     for member in crew_copy:
         if member['infirmary'] == False and member['blocked'] == False:
                 member['crew_type'] = random.choice([CREW_COMMANDER, CREW_TACTICAL, CREW_MEDICAL, CREW_SCIENCE, CREW_ENGINEERING, CREW_SCANNER])
+                if member["crew_type"] == CREW_SCANNER:
+                    member["blocked"] = True
     return crew_copy
 
-def check_scanners(crew, active_threats, threats):
+def check_scanners(crew, active_threats, threats, health, shield):
     """
     Counts the number of scanners in the crew, spawns a new threat for each 3 scanners
     and then frees those scanners used to spawn the threat.
@@ -476,8 +478,8 @@ def check_scanners(crew, active_threats, threats):
             n_of_scanners += 1
     
     while n_of_scanners >= 3:
-        add_threat(active_threats, threats)
-        n_of_scanners= free_scanners(crew, n_of_scanners)
+        add_threat(active_threats, threats, crew)
+        n_of_scanners, crew_copy= free_scanners(crew, n_of_scanners)
         
     print_interface(health, shield, threats, crew, "Press (↵) to continue")
 
@@ -527,7 +529,7 @@ def check_scanners(crew, active_threats, threats):
             n_of_scanners += 1
     
     while n_of_scanners >= 3:
-        add_threat(active_threats, threats)
+        add_threat(active_threats, threats, crew)
         n_of_scanners= free_scanners(crew, n_of_scanners)
 
     return crew_copy

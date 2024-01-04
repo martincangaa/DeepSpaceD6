@@ -53,7 +53,7 @@ def main():
 
         io.print_interface(health, shield, active_threats, crew, "Press (↵) to continue", True)
 
-        crew = gl.check_scanners(crew, active_threats, threats)
+        crew = gl.check_scanners(crew, active_threats, threats, health, shield)
         
         io.print_interface(health, shield, active_threats, crew,"Press (↵) to continue", False, dice_number_str)
         # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
