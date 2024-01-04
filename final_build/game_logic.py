@@ -91,7 +91,7 @@ def create_threats():
     nebula = {'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}
 
-    mercernary = {'name': 'Mercenary', 'description': 'If no threats activated this round, -2Hull', 'dice_numbers': [], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
+    mercenary = {'name': 'Mercenary', 'description': 'If no threats activated this round, -2Hull', 'dice_numbers': [], 'health': 3, 'attack': '2NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False} 
 
     cloaked_threats = {'name': 'Cloaked Threats', 'description': 'After the threat phase. Roll the threat die again', 'dice_numbers': [2], 'health': no_health_threat, 'attack': '',  'assignable_crew': [CREW_SCIENCE, CREW_COMMANDER], 
@@ -200,20 +200,14 @@ def activate_threats(active_threats,crew, threat, throw_dice_result, health, shi
         if throw_dice_result in threat['dice_numbers']:
             
             if threat['name'] == 'Meteoroid' and threat['stun'] == False:
-                shield -= int(threat['attack'][0:1])
-                
-                if shield <0:
-                    health -= abs(shield)
-                    shield=0
-                
+                health -= int(threat['attack'][0:1])
                 damage_done = True
                 activated_threat = True
-                
-                if threat['health'] == 0:
+                if threat['health'] <= 0:
                     shield -= 5
-                if shield <0:
-                    health -= abs(shield)
-                    shield=0
+                    if shield <0:
+                        health -= abs(shield)
+                        shield=0
             
             if threat['name'] == 'Meteoroid' and threat['stun'] == True:
                 threat['stun'] = False
