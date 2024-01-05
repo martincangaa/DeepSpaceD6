@@ -20,6 +20,7 @@ def menu():
     Returns:
         int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
     """
+    clear_terminal()
     print('LEVELS OF DIFFICULTY:')
     print("1 - Easy: 1 Don't panic card is substracted from the threads")
     print("2 - Medium: 3 Don't panic cards are substracted from the threads")
@@ -117,15 +118,15 @@ def game_over():
          "Y88888P"      Y8P     8888888888 888   T88b 
           """)
     time.sleep(2)
-    ask_user = input("Do you want to keep playing?\n Yes\n No")
-    print(ask_user)    
-    while ask_user != 'Yes' or ask_user != 'No':
-        ask_user = input("")
+    print("Do you want to keep playing?\n 1)Yes \n 2)No")
 
-    if ask_user == "Yes":
-        dsd.main()
-    elif ask_user == 'no':
-        exit
+    while True:
+        if keyboard.is_pressed('1'):
+            dsd.main()  # Assuming dsd is a module or function you want to call
+            break
+        elif keyboard.is_pressed('2'):
+            print("Game Over. Thank you for playing!")
+            break
 
 def win_game():
     print("""

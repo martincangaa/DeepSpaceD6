@@ -30,17 +30,18 @@ def main():
         ]
     
     threats = gl.create_threats()
-    active_threats = []
+    active_threats = [{'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}]
     n_external_defeated = 0 # the number of enemies defeated
     dice_number_str = '_'
     
     io.menu()
     threats = gl.check_difficulty(threats)
 
-    for i in range(2):
+    """ for i in range(2):
         starting_threat = random.choice(threats)
         active_threats.append(starting_threat)
-        threats.remove(starting_threat)
+        threats.remove(starting_threat) """
 
     while True:
 
@@ -65,7 +66,7 @@ def main():
 
         active_threats, crew = gl.check_threats(active_threats, crew)
 
-        io.print_interface("Checking threats", health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
+        io.print_interface("Checking threats", health, shield, active_threats, crew, "Press (↵) to continue", True)
         
             # for every repetition inside the assign_crew we will use at least this:
             # n_external_defeated += check_threats(active_threats)
@@ -80,7 +81,7 @@ def main():
 
         io.print_interface("New threat appears", health, shield, active_threats, crew, "Press (↵) to continue", True)
 
-        dice_number, crew, active_threats, health, shield = gl.iterate_through_threats(active_threats, crew, health, shield)
+        dice_number, crew, active_threats, health, shield = gl.activate_threats(active_threats, crew, health, shield)
         
         dice_number_str = str(dice_number)
 
