@@ -30,18 +30,17 @@ def main():
         ]
     
     threats = gl.create_threats()
-    active_threats = [{'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
-                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}]
+    active_threats = []
     n_external_defeated = 0 # the number of enemies defeated
     dice_number_str = '_'
     
     io.menu()
     threats = gl.check_difficulty(threats)
 
-    """ for i in range(2):
+    for i in range(2):
         starting_threat = random.choice(threats)
         active_threats.append(starting_threat)
-        threats.remove(starting_threat) """
+        threats.remove(starting_threat)
 
     while True:
 
