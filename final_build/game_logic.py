@@ -177,11 +177,13 @@ def activate_threats(active_threats, crew, health, shield):
     Returns:
         list: The updated list of crewmembers.
     """
-    #damage_done 
-    throw_dice_result = throw_dice(1)
-    io.print_interface("Roll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
     damage_done = False
     activated_threat = False
+    initial_health = health
+
+    throw_dice_result = throw_dice(1)
+    io.print_interface("Roll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
+    
     for threat in active_threats:
         if not threat['mission']:
 
@@ -192,29 +194,17 @@ def activate_threats(active_threats, crew, health, shield):
                     if shield <0:
                         health -= abs(shield)
                         shield=0
+                    damage_done = True
                 if threat['attack'][1:] == 'IS' and threat['stun'] == False:
                     health = health - int(threat['attack'][0:1])
+                    damage_done = True
                 if threat['attack'][1:] == 'DS' and threat['stun'] == False:
                     shield = 0
                     health -= int(threat['attack'][0:1])
+                    damage_done = True
     
         if threat['mission']:
-            if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == False :
-                shield -= int(threat['attack'][0:1])
-                if shield <0:
-                    health -= abs(shield)
-                    shield=0
-            if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == True :
-                threat['stun'] = False
-
-            if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == False:
-                shield -= int(threat['attack'][0:1])
-                if shield <0:
-                    health -= abs(shield)
-                    shield=0
-            if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
-                threat['stun'] = False
-
+            
             if threat['name'] == 'Panel Explosion' and threat['stun'] == False:
                 activated_threat = True
                 crew[4]['blocked'] = True
@@ -238,13 +228,15 @@ def activate_threats(active_threats, crew, health, shield):
             if threat['name'] == 'Friendly Fire' and threat['stun'] == False:
                 activated_threat = True
                 for member in crew:
-                   if member['crew_type'] == 1:
-                       member['infirmary'] = True
+                    if member['crew_type'] == 1:
+                        member['infirmary'] = True
+                        active_threats.remove(threat)
+                        io.print_interface("Threats activate", health, shield, active_threats, crew)
             if threat['name'] == 'Friendly Fire' and threat['stun'] == True:
                 threat['stun'] = False
 
             if throw_dice_result[0] in threat['dice_numbers']:
-
+                
                 if threat['name'] == 'Meteoroid' and threat['stun'] == False:
                     health -= int(threat['attack'][0:1])
                     damage_done = True
@@ -277,19 +269,20 @@ def activate_threats(active_threats, crew, health, shield):
                         health -= abs(shield)
                         shield=0
 
-
                 if threat['name'] == 'Boarding Ship' and threat['stun'] == True:
                     threat['stun'] = False
 
                 if (threat['name'] == 'Bomber' or threat['name'] == 'Bomber2' or threat['name'] == 'Bomber3') and threat['stun'] == False:
+                    damage_done = True
+                    activated_threat = True
+                    
                     while True:
                         i = random.randint(0,5)
                         if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                             crew[i]['infirmary'] = True
                             break     
                     shield -= int(threat['attack'][0:1])
-                    damage_done = True
-                    activated_threat = True
+            
                     if shield <0:
                         health -= abs(shield)
                         shield=0
@@ -305,7 +298,6 @@ def activate_threats(active_threats, crew, health, shield):
                         health -= abs(shield)
                         shield=0
 
-
                 if threat['name'] == 'Hijackers' and threat['stun'] == True:   
                     threat['stun'] = False        
 
@@ -315,8 +307,7 @@ def activate_threats(active_threats, crew, health, shield):
                         i = random.randint(0,5)
                         if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                             crew[i]['infirmary'] = True
-                            break
-                        
+                            break  
                         
                 if threat['name'] == 'Pandemic' and threat['stun'] == True:
                     threat['stun'] = False
@@ -339,12 +330,10 @@ def activate_threats(active_threats, crew, health, shield):
                         i = random.randint(0,5)
                         if crew[i]['blocked'] == False and crew[i]['infirmary'] == False:
                             crew[i]['infirmary'] = True
-                            break
-                        
+                            break  
                         
                 if  threat['name'] == 'Robot Uprising' and threat['stun'] == True:
                     threat['stun'] = False
-
 
                 if threat['name'] == 'Boost Morale' and threat['stun'] == False:
                     activated_threat = True
@@ -352,8 +341,7 @@ def activate_threats(active_threats, crew, health, shield):
                         if member['crew_type'] == 5:
                             member['crew_type'] = 6
                             member['blocked'] = False
-                            break
-                        
+                            break      
                             
                 if threat['name'] == 'Boost Morale' and threat['stun'] == True:
                     threat['stun']= False
@@ -379,7 +367,6 @@ def activate_threats(active_threats, crew, health, shield):
                             crew[i]['blocked'] = False  
                             crew[i]['infirmary'] = False
 
-
                 if threat['name'] == 'Distracted' and threat['stun'] == True:
                     threat['stun'] = False
 
@@ -401,6 +388,25 @@ def activate_threats(active_threats, crew, health, shield):
 
                 if threat['name'] == 'Nebula' and threat['stun'] == True:
                     threat['stun'] = False
+    
+    for threat in active_threats:
+        
+        if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == False :
+                shield -= int(threat['attack'][0:1])
+                if shield <0:
+                    health -= abs(shield)
+                    shield=0
+        if threat['name'] == 'Mercenary' and activated_threat == False and threat['stun'] == True :
+            threat['stun'] = False
+        
+        if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == False:
+                activated_threat = True
+                shield -= int(threat['attack'][0:1])
+                if shield <0:
+                    health -= abs(shield)
+                    shield=0
+        if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
+            threat['stun'] = False
     
     return throw_dice_result[0], crew, active_threats, health, shield
 
@@ -538,7 +544,7 @@ def check_threats(active_threats, crew):
     threats_to_remove = []
     
     for threat in active_threats_copy:
-        if threat['name'] == "Friendly Fire" or threat['name'] == "Boost Morale" or threat["name"] == "Solar Winds" or threat["name"] == "Don't Panic":
+        if threat['name'] == "Boost Morale" or threat["name"] == "Solar Winds" or threat["name"] == "Don't Panic":
             threats_to_remove.append(threat)
             crew_copy = free_crew(threat, crew)
 
