@@ -208,16 +208,18 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
     
         if threat['mission']:
             
-            if threat['name'] == 'Panel Explosion' and threat['stun'] == False:
+            if threat['name'] == 'Panel explosion' and threat['stun'] == False:
                 activated_threat = True
-                crew[4]['blocked'] = True
-            if threat['name'] == 'Panel Explosion' and threat['stun'] == True:
+                for crewmate in crew:
+                    if crewmate["crew_type"] == 0:
+                        crewmate["blocked"] = True
+            if threat['name'] == 'Panel explosion' and threat['stun'] == True:
                 threat['stun'] = False
 
             if threat['name'] == 'Comms Offline' and threat['stun'] == False:
                 activated_threat = True
                 for crewmate in crew:
-                    if crewmate["crew_type"] == CREW_COMMANDER:
+                    if crewmate["crew_type"] == 0:
                         crewmate["blocked"] = True
             if threat['name'] == 'Comms Offline' and threat['stun'] == True:
                 threat['stun'] = False
