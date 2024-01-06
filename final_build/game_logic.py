@@ -162,7 +162,7 @@ def add_threat(active_threats, threats, crew):
     
     return active_threats_copy, threats_copy, crew_copy
 
-def activate_threats(active_threats, crew, health, shield):
+def activate_threats(active_threats, crew, health, shield, already_cloaked = False):
     """
     Activates each threat regarding the result of the die.
     Damage_done is a boolean used so as to help with the 'Scouting ship' threat
@@ -182,8 +182,10 @@ def activate_threats(active_threats, crew, health, shield):
     initial_health = health
 
     throw_dice_result = throw_dice(1)
-    io.print_interface("Roll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
     
+    if already_cloaked == True:
+        io.print_interface("Reroll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, str(throw_dice_result[0]))
+
     for threat in active_threats:
         if not threat['mission']:
 
@@ -370,13 +372,6 @@ def activate_threats(active_threats, crew, health, shield):
                 if threat['name'] == 'Distracted' and threat['stun'] == True:
                     threat['stun'] = False
 
-                """if threat['name'] == 'Cloaked Threats' and threat['stun'] == False:
-                    activated_threat = True
-                    iterate_through_threats(active_threats, crew, health, shield)"""
-
-                if threat['name'] == 'Cloaked Threats' and threat['stun'] == True:
-                    threat['stun'] = False
-
                 if threat['name'] == 'Nebula' and threat['stun'] == False:
                     activated_threat = True
                     offline_shields_value = -50
@@ -407,7 +402,12 @@ def activate_threats(active_threats, crew, health, shield):
                     shield=0
         if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
             threat['stun'] = False
-    
+
+        if threat['name'] == 'Cloaked Threats' and already_cloaked == False:
+            if throw_dice_result[0] == threat['dice_numbers'][0]:
+                io.print_interface("Reroll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, str(throw_dice_result[0]))
+                throw_dice_result[0], crew, active_threats, health, shield = activate_threats(active_threats, crew, health, shield, True)        
+
     return throw_dice_result[0], crew, active_threats, health, shield
 
 def throw_dice(n):

@@ -30,18 +30,20 @@ def main():
         ]
     
     threats = gl.create_threats()
-    active_threats = []
+    active_threats = [{'name': 'Cloaked Threats', 'description': 'After the threat phase. Roll the threat die again', 'dice_numbers': [1,2,3,4,5,6], 'health': 15, 'attack': '',  'assignable_crew': [CREW_SCIENCE, CREW_COMMANDER], 
+                'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}]
     n_external_defeated = 0 # the number of enemies defeated
     dice_number_str = '_'
     
     io.menu()
     threats = gl.check_difficulty(threats)
 
-    for i in range(2):
-        starting_threat = random.choice(threats)
-        active_threats.append(starting_threat)
-        threats.remove(starting_threat)
+    #for i in range(2):
+    #    starting_threat = random.choice(threats)
+    #    active_threats.append(starting_threat)
+    #    threats.remove(starting_threat)
 
+    check_scan_init = False
     while True:
 
         #Conditions to loose
@@ -51,11 +53,10 @@ def main():
 
         crew = gl.get_crew(crew)
 
-        io.print_interface("Roll crewmate", health, shield, active_threats, crew, "Press (↵) to continue", True)
+        io.print_interface("Checking scanners", health, shield, active_threats, crew,"Press (↵) to continue", check_scan_init, dice_number_str)
+        check_scan_init = True
 
         crew, active_threats, threats = gl.check_scanners(crew, active_threats, threats)
-        
-        io.print_interface("Checking scanners", health, shield, active_threats, crew,"Press (↵) to continue", False, dice_number_str)
 
         # COMPLEX FUNCTION --> probably will start a loop until the user can't perform anymore actions or they decide they dont want to do anything else
         # will check if the active_threats can be solved with any current crewmate, if it is possible to get a crewmate out of the infirmary...
@@ -63,9 +64,9 @@ def main():
         # (crewmate might me blocked when selecting one of it's possible actions for example)
         crew, active_threats, health, shield = io.assign_crew(crew, active_threats, health, shield)
 
-        active_threats, crew = gl.check_threats(active_threats, crew)
-
         io.print_interface("Checking threats", health, shield, active_threats, crew, "Press (↵) to continue", True)
+
+        active_threats, crew = gl.check_threats(active_threats, crew)
         
             # for every repetition inside the assign_crew we will use at least this:
             # n_external_defeated += check_threats(active_threats)
@@ -75,16 +76,16 @@ def main():
         if n_external_defeated >= 36 or len(threats) == 0:
             win = True  # determine the screen to be printed after ending the loop (see if-statement out of the loop)
             break   # get out of the while
+        
+        io.print_interface("New threat appears", health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
 
         active_threats, threats, crew = gl.add_threat(active_threats, threats, crew)
 
-        io.print_interface("New threat appears", health, shield, active_threats, crew, "Press (↵) to continue", True)
+        io.print_interface("Roll threat's dice and activate threats", health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
 
         dice_number, crew, active_threats, health, shield = gl.activate_threats(active_threats, crew, health, shield)
         
         dice_number_str = str(dice_number)
-
-        io.print_interface("Threats activate", health, shield, active_threats, crew, "Press (↵) to continue", True, dice_number_str)
 
     # Prints different screens depending on the result of the game
     # In both screens the user will be asked if they want to play again, if the answer is yes, the main method will be called
