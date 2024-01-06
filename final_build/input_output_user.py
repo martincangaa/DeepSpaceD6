@@ -151,7 +151,6 @@ def clear_terminal():
     else: # Linux or Mac
         os.system('clear')
 
-
 def change_face(crewmember):
     """
     Changes the crew type of a crewmember based on user input.
@@ -625,20 +624,30 @@ def show_options(index_crewmember, crewmember, crew, active_threats, health, shi
         key_pressed = False
         key_pressed2 = True
 
+        for threat in active_threats_copy:
+            if threat['name'] == 'Nebula':
+                block_recharge = True
+            else:
+                block_recharge = False
+
         time.sleep(0.1)
 
         while True:
             if keyboard.is_pressed('1'):
                 if not key_pressed:
                     key_pressed = True
+                    
                     active_threats_copy = stun_threat(active_threats_copy)
                     break
             
             elif keyboard.is_pressed('2'):
                 if not key_pressed:
-                    key_pressed = True
-                    shield = 4
-                    break
+                    if block_recharge == True:
+                        print('You cannot recharge shields while the Nebula is active')
+                    else:
+                        key_pressed = True
+                        shield = 4
+                        break
 
             elif keyboard.is_pressed('3'):
                 if not key_pressed:

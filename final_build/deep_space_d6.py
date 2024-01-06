@@ -30,7 +30,7 @@ def main():
         ]
     
     threats = gl.create_threats()
-    active_threats = [{'name': 'Cloaked Threats', 'description': 'After the threat phase. Roll the threat die again', 'dice_numbers': [1,2,3,4,5,6], 'health': 15, 'attack': '',  'assignable_crew': [CREW_SCIENCE, CREW_COMMANDER], 
+    active_threats = [{'name': 'Nebula', 'description': 'Shields offline, -1NM when destroyed shields online', 'dice_numbers': [1,2,3,4,5], 'health': 3, 'attack': '1NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': True, 'stun': False}]
     n_external_defeated = 0 # the number of enemies defeated
     dice_number_str = '_'

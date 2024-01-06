@@ -375,10 +375,6 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
 
                 if threat['name'] == 'Nebula' and threat['stun'] == False:
                     activated_threat = True
-                    offline_shields_value = -50
-                    shield = offline_shields_value
-                    if threat['health'] == 0:
-                        shield = 0
                     damage_done = True
                     health -= int(threat["attack"][0:1])
 
@@ -403,6 +399,9 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
                     shield=0
         if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
             threat['stun'] = False
+
+        if threat['name'] == 'Nebula' and threat['stun'] == False:
+            shield = 0
         
         if threat['name'] == 'Cloaked Threats' and already_cloaked == False:
             if throw_dice_result[0] in threat['dice_numbers']:
