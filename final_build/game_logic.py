@@ -1,6 +1,7 @@
 import random
 from collections import Counter
 import input_output_user as io
+import file_mgmt as fm
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -505,9 +506,7 @@ def check_difficulty(threats):
     dont_panic = {'name': "Don't Panic", 'description': 'nothing happens', 'dice_numbers': [], 'health': 15, 'attack': '',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False}
 
-    f = open('difficulty.txt', "r")
-    difficulty = f.readline().strip() 
-    f.close()
+    difficulty = fm.read_difficulty()
 
     if difficulty == "1":
         cards_to_be_added = 5

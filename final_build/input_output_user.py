@@ -4,6 +4,7 @@ import os
 import time
 from collections import Counter
 import deep_space_d6 as dsd
+import file_mgmt as fm
 
 CREW_COMMANDER = 0
 CREW_TACTICAL = 1
@@ -31,9 +32,7 @@ def menu():
         print('Not valid level')
         difficulty = input('Which level of difficulty do you want to play (1=easy, 2=medium, 3=hard)? ')
     
-    file = open('difficulty.txt', 'w')
-    file.write(str(difficulty))
-    file.close()
+    fm.write_difficulty(difficulty)
 
 def print_interface(phase, health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
     clear_terminal()
