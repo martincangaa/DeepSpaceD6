@@ -1,4 +1,5 @@
 import random
+import time
 from collections import Counter
 import input_output_user as io
 import file_mgmt as fm
@@ -184,7 +185,7 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
     throw_dice_result = throw_dice(1)
     
     if already_cloaked == True:
-        io.print_interface("Reroll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, str(throw_dice_result[0]))
+        io.print_interface("Activate threats with reroled dice", health, shield, active_threats, crew, "Press (↵) to continue", True, str(throw_dice_result[0]))
 
     for threat in active_threats:
         if not threat['mission']:
@@ -402,11 +403,11 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
                     shield=0
         if threat['name'] == 'Scouting Ship' and damage_done and threat['stun'] == True:
             threat['stun'] = False
-
+        
         if threat['name'] == 'Cloaked Threats' and already_cloaked == False:
-            if throw_dice_result[0] == threat['dice_numbers'][0]:
+            if throw_dice_result[0] in threat['dice_numbers']:
                 io.print_interface("Reroll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, str(throw_dice_result[0]))
-                throw_dice_result[0], crew, active_threats, health, shield = activate_threats(active_threats, crew, health, shield, True)        
+                throw_dice_result[0], crew, active_threats, health, shield = activate_threats(active_threats, crew, health, shield, True)   
 
     return throw_dice_result[0], crew, active_threats, health, shield
 
