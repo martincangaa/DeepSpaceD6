@@ -368,8 +368,19 @@ def stun_threat(active_threats):
     threat_stunned = False
     active_threats_list = ""
 
+    counter = 1
+    real_index = []
+    fake_index = []
+
     for i in range(len(active_threats)):
-        active_threats_list += str(i+1) + ") " + active_threats[i]["name"] + "\n"
+        if active_threats[i]['mission'] == False:
+            
+            active_threats_list += str(counter+1) + ") " + active_threats[i]["name"] + "\n"
+            
+            fake_index.append(counter)
+            real_index.append(i)
+            
+            counter += 1
 
     print('Select the threat you want to stun:\n')
     print(active_threats_list)  
@@ -377,14 +388,14 @@ def stun_threat(active_threats):
     time.sleep(0.1) 
 
     while True:
-        for i in range(len(active_threats)):
-            if keyboard.is_pressed(str(i+1)):
-                if not threat_stunned:
-                    active_threats[i]["stun"] = True
-                    threat_stunned = True
-                    break
-        if threat_stunned:
+        
+        input = keyboard.read_event().name
+        
+        if input.isnumeric() and int(input) in fake_index:
+            active_threats[real_index[fake_index.index(int(input))]]["stun"] = True
             break
+        else:
+            print('Choose a valid option')
 
     return active_threats
 
