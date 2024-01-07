@@ -64,31 +64,31 @@ def print_interface(phase, health, shield, active_threats, crew, message_to_cont
             assigned_crew[i] = initials[assigned_crew[i]]
 
         threat_info = "- " + threat_health + " | " + str(threat["name"]) + " | " + str(threat["dice_numbers"]) + " | " + str(threat["description"]) + " | " + str(assignable_crew) + " | " + str(assigned_crew) + threat_stunned
-        remaining_spaces = 105-len(threat_info)
+        remaining_spaces = 123-len(threat_info)
         str1 = " "* remaining_spaces + "║" + "\n║   "
         active_threats_str += threat_info + str1
 
     print(f"""
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗   
-║                                                                                                            ║   C = Commander (0)     T = Tactical (1)
-║                                    .-. .-. .-. .-.   .-. .-. .-. .-. .-.                                   ║   M = Medical (2)        S = Science (3) 
-║                                    |  )|-  |-  |-'   `-. |-' |-| |   |-                                    ║   E = Engineering (4)    $ = Scanner         / = None
-║                                    `-' `-' `-' '     `-' '   ` ' `-' `-'                                   ║   
-║                                    -------------------------------------                                   ║   B = Blocked        I = Infirmary       F = Free
-║                                                                                                            ║
-║    | Phase: {phase + " |" + (93 - len(phase)) * " "}║   ◬ = Internal Threat
-║                         ___                            Health: {str(health_percentage) + "%" + " "*(4-len(str(health_percentage))) + "███"*health + " "*(41-health*3-2)}║                             |Active Threats Structure|
-║     Active Threats:    |_{dice_number}_|                                                                               ║   Health | Name | Dices | Description | Assignable crew | Assigned crew | Stunned
-║   -----------------------------                        Shield: {str(shield_percentage) + "%" + " "*(4-len(str(shield_percentage))) + "███"*shield + " "*(41-shield*3-2)}║
-║                                                                                                            ║
-║   {active_threats_str}                                                                                                         ║
-║                                                                                                            ║
-║   ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐                     {"." + "-"*len(message_to_continue) + "." + " " * (29-len(message_to_continue))}             ║
-║   │ {initials[crew[0]["crew_type"]]} │  │ {initials[crew[1]["crew_type"]]} │  │ {initials[crew[2]["crew_type"]]} │  │ {initials[crew[3]["crew_type"]]} │  │ {initials[crew[4]["crew_type"]]} │  │ {initials[crew[5]["crew_type"]]} │                     |{message_to_continue}|{" " * (29-len(message_to_continue))}             ║
-║   └───┘  └───┘  └───┘  └───┘  └───┘  └───┘                     {"'" + "-"*len(message_to_continue) + "'" + " " * (29-len(message_to_continue))}             ║
-║     {"F" if not crew[0]["blocked"] and not crew[0]["infirmary"] else "I" if crew[0]["infirmary"] else "B"}      {"F" if not crew[1]["blocked"] and not crew[1]["infirmary"] else "I" if crew[1]["infirmary"] else "B"}      {"F" if not crew[2]["blocked"] and not crew[2]["infirmary"] else "I" if crew[2]["infirmary"] else "B"}      {"F" if not crew[3]["blocked"] and not crew[3]["infirmary"] else "I" if crew[3]["infirmary"] else "B"}      {"F" if not crew[4]["blocked"] and not crew[4]["infirmary"] else "I" if crew[4]["infirmary"] else "B"}      {"F" if not crew[5]["blocked"] and not crew[5]["infirmary"] else "I" if crew[5]["infirmary"] else "B"}                                                                   ║
-║                                                                                                            ║
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝         
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗   
+║                                                                                                                              ║   C = Commander (0)     T = Tactical (1)
+║                                             .-. .-. .-. .-.   .-. .-. .-. .-. .-.                                            ║   M = Medical (2)        S = Science (3) 
+║                                             |  )|-  |-  |-'   `-. |-' |-| |   |-                                             ║   E = Engineering (4)    $ = Scanner         / = None
+║                                             `-' `-' `-' '     `-' '   ` ' `-' `-'                                            ║   
+║                                             -------------------------------------                                            ║   B = Blocked        I = Infirmary       F = Free
+║                                                                                                                              ║
+║    | Phase: {phase + " |" + (111 - len(phase)) * " "}║   ◬ = Internal Threat
+║                         ___                                              Health: {str(health_percentage) + "%" + " "*(4-len(str(health_percentage))) + "███"*health + " "*(41-health*3-2)}║                             |Active Threats Structure|
+║     Active Threats:    |_{dice_number}_|                                                                                                 ║   Health | Name | Dices | Description | Assignable crew | Assigned crew | Stunned
+║   -----------------------------                                          Shield: {str(shield_percentage) + "%" + " "*(4-len(str(shield_percentage))) + "███"*shield + " "*(41-shield*3-2)}║
+║                                                                                                                              ║
+║   {active_threats_str}                                                                                                                           ║
+║                                                                                                                              ║
+║   ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐  ┌───┐                                                {"." + "-"*len(message_to_continue) + "." + " " * (29-len(message_to_continue))}    ║
+║   │ {initials[crew[0]["crew_type"]]} │  │ {initials[crew[1]["crew_type"]]} │  │ {initials[crew[2]["crew_type"]]} │  │ {initials[crew[3]["crew_type"]]} │  │ {initials[crew[4]["crew_type"]]} │  │ {initials[crew[5]["crew_type"]]} │                                                |{message_to_continue}|{" " * (29-len(message_to_continue))}    ║
+║   └───┘  └───┘  └───┘  └───┘  └───┘  └───┘                                                {"'" + "-"*len(message_to_continue) + "'" + " " * (29-len(message_to_continue))}    ║
+║     {"F" if not crew[0]["blocked"] and not crew[0]["infirmary"] else "I" if crew[0]["infirmary"] else "B"}      {"F" if not crew[1]["blocked"] and not crew[1]["infirmary"] else "I" if crew[1]["infirmary"] else "B"}      {"F" if not crew[2]["blocked"] and not crew[2]["infirmary"] else "I" if crew[2]["infirmary"] else "B"}      {"F" if not crew[3]["blocked"] and not crew[3]["infirmary"] else "I" if crew[3]["infirmary"] else "B"}      {"F" if not crew[4]["blocked"] and not crew[4]["infirmary"] else "I" if crew[4]["infirmary"] else "B"}      {"F" if not crew[5]["blocked"] and not crew[5]["infirmary"] else "I" if crew[5]["infirmary"] else "B"}                                                                                     ║
+║                                                                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝         
            """)
     
     if user_confirmation:
