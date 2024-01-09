@@ -408,7 +408,7 @@ def stun_threat(active_threats):
     for i in range(len(active_threats)):
         if active_threats[i]['mission'] == False:
             
-            active_threats_list += str(counter+1) + ") " + active_threats[i]["name"] + "\n"
+            active_threats_list += str(counter) + ") " + active_threats[i]["name"] + "\n"
             
             fake_index.append(counter)
             real_index.append(i)
