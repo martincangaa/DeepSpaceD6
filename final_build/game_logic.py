@@ -14,11 +14,12 @@ EMPTY = 6
 no_health_threat = 15
 
 def create_threats():
-    #A few comments and points that I've jotted down in the making of this function
-    #First of all, there are some threats which you can simply eliminate with tactical crew, but they can also be eliminated by assigning crew members
-    #prolly, what we should do is create another boolean to check if said those two conditions are met (having health and also being able to disable it by assigning crew)
-    #another thing that i've noted is that there is one function that can be disable either with a 3 or a with a 2, one option I've thought is the creation of another boolean
-    #I've also been pondering if I should add another boolean to time_warp or instead I should  just do its effect on activate_threads
+    """
+    Creates the list of threats in the game
+
+    Returns:
+        list_of_threats (array): An array containing all the dictionaries corresponding with each threat
+    """
     no_health_threat = 15
     flagship = {'name': 'Flagship', 'description': '-3 Hull', 'dice_numbers': [4,5,6], 'health': 4, 'attack': '3NM',  'assignable_crew': [], 
                 'assigned_crew': [], 'block_till_complete': [], 'mission': False, 'stun': False} 
@@ -138,7 +139,19 @@ def create_threats():
 
 
 def add_threat(active_threats, threats, crew):
-    
+    """
+    Add a random threat to the active threats list and remove it from the threats list.
+    If the random threat is 'Distracted', block a crew member and send them to the infirmary.
+
+    Args:
+        active_threats (list): List of currently active threats.
+        threats (list): List of available threats.
+        crew (list): List of crew members.
+
+    Returns:
+        tuple: A tuple containing the updated active threats list, threats list, and crew list.
+    """
+
     active_threats_copy = active_threats.copy()
     threats_copy = threats.copy()
     crew_copy = crew.copy()
@@ -172,11 +185,12 @@ def activate_threats(active_threats, crew, health, shield, already_cloaked = Fal
     Args:
         active_threats: list with the current active threats
         crew: list with the crew 
-        threat: 
-        throw_dice_result: e
+        health: The remaining health of the player
+        shield: The remaining shield of the player
+        already_clocked: True if cloacked threat have been activated in the turn
         
     Returns:
-        list: The updated list of crewmembers.
+        tuple: A tuple containing throw_dice_result[0], crew, active_threats, health, shield
     """
     damage_done = False
     activated_threat = False
@@ -426,21 +440,18 @@ def throw_dice(n):
     for i in range(n):
         random_numbers.append(random.randint(1, 6))
     return random_numbers
-"""
-def iterate_through_threats(active_threats, crew, health, shield):
-    throw_dice_result = throw_dice(1)
 
-    io.print_interface("Roll threat's dice", health, shield, active_threats, crew, "Press (↵) to continue", True, throw_dice_result[0])
-
-    new_health = health
-    new_shield = shield
-
-    for threat in active_threats:
-        crew, active_threats, new_health, new_shield = activate_threats(active_threats, crew, threat, throw_dice_result[0], new_health, new_shield)    
-    
-    return throw_dice_result[0], crew, active_threats, new_health, new_shield
-"""
 def get_crew(crew):
+    """
+    Assigns crew members their crew type randomly, excluding those in the infirmary or blocked.
+    If a crew member is assigned as a scanner, their "blocked" status is set to True.
+
+    Args:
+        crew (list): List of crew members.
+
+    Returns:
+        list: A copy of the crew list with crew types assigned.
+    """
     crew_copy = crew.copy()
 
     for member in crew_copy:
@@ -482,9 +493,11 @@ def check_scanners(crew, active_threats, threats):
 
     Args:
         crew (array): An array containing the crewmates
+        active_threats (array): An array containing the threats active in the game
+        threats (array): An array containing the threats that haven't been defeated
 
     Returns: 
-        crew_copy (array): An array containing the updated crewmates
+        tuple: A tuple containing crew_copy, active_threats, threats
     """
     crew_copy = crew[:]
     n_of_scanners = 0
@@ -505,7 +518,7 @@ def check_difficulty(threats):
     Don't Panic cards from the threats array in order to change the difficulty of the game
 
     Args:
-        difficulty (int): The difficulty selection of the user in the menu (1 = easy, 2 = medium, 3 = hard)
+        threats (array): An array containing the threats of the game
     
     Returns:
         new_threats (array): An array similar to the threats one but without the corresponding Don't Panic cards
@@ -532,6 +545,16 @@ def check_difficulty(threats):
     return new_threats
 
 def free_crew(threat, crew):
+    """
+    Frees up the crew members who were previously assigned to handle a threat.
+    
+    Args:
+        threat (dict): The threat object containing information about the assigned crew members.
+        crew (list): The list of crew members.
+        
+    Returns:
+        list: A copy of the crew list with the blocked status of the assigned crew members set to False.
+    """
     crew_copy = crew[:]
     for assigned_crewmate in threat["assigned_crew"]:
         for crewmate in crew_copy:
@@ -541,6 +564,17 @@ def free_crew(threat, crew):
     return crew_copy
 
 def check_threats(active_threats, crew):
+    """
+    Check the active threats and update the crew accordingly.
+
+    Args:
+        active_threats (list): A list of active threats.
+        crew (list): A list of crew members.
+
+    Returns:
+        tuple: A tuple containing the updated active threats and crew.
+    """
+    
     active_threats_copy = active_threats[:]
     crew_copy = crew[:]
     threats_to_remove = []
@@ -568,6 +602,15 @@ def check_threats(active_threats, crew):
     return active_threats_copy, crew_copy
 
 def can_be_gathered(crew):
+    """
+    Determines if any crew member can be gathered.
+    
+    Args:
+        crew (list): List of crew members.
+        
+    Returns:
+        bool: True if at least one crew member can be gathered, False otherwise.
+    """
     for crewmate in crew:
         if crewmate['blocked'] == False and crewmate['infirmary'] == False and crewmate['crew_type'] != CREW_SCANNER:
             return True

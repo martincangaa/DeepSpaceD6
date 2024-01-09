@@ -17,9 +17,6 @@ NONE = 6
 def menu():
     """
     Shows the user the different levels that can be played inside the game, asks which of them is going to be played and writes it in a file.
-
-    Returns:
-        int: Number corresponding to the level that the user wants to play (1=easy, 2=medium, 3=hard).
     """
     clear_terminal()
     print('LEVELS OF DIFFICULTY:')
@@ -35,6 +32,20 @@ def menu():
     fm.write_difficulty(difficulty)
 
 def print_interface(phase, health, shield, active_threats, crew, message_to_continue='Press (↵) to continue', user_confirmation=False, dice_number='_'):
+    """
+    Prints the interface for the game with the given parameters.
+
+    Args:
+        phase (str): The current phase of the game.
+        health (int): The health value.
+        shield (int): The shield value.
+        active_threats (list): A list of active threats.
+        crew (list): A list of crew members.
+        message_to_continue (str, optional): The message to display for continuing the game. Defaults to 'Press (↵) to continue'.
+        user_confirmation (bool, optional): Whether user confirmation is required. Defaults to False.
+        dice_number (str, optional): The dice number. Defaults to '_'.
+    """
+
     clear_terminal()
 
     initials = ["C", "T", "M", "S", "E", "$", "/"]
@@ -69,7 +80,7 @@ def print_interface(phase, health, shield, active_threats, crew, message_to_cont
         active_threats_str += threat_info + str1
 
     print(f"""
-╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗   
+╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗   
 ║                                                                                                                              ║   C = Commander (0)     T = Tactical (1)
 ║                                             .-. .-. .-. .-.   .-. .-. .-. .-. .-.                                            ║   M = Medical (2)        S = Science (3) 
 ║                                             |  )|-  |-  |-'   `-. |-' |-| |   |-                                             ║   E = Engineering (4)    $ = Scanner         / = None
@@ -90,11 +101,16 @@ def print_interface(phase, health, shield, active_threats, crew, message_to_cont
 ║                                                                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝         
            """)
-    
+
     if user_confirmation:
         keyboard.wait("enter")
 
 def game_over():
+    """
+    Prints a game over message and asks the user if they want to keep playing.
+    If the user chooses to continue playing, it calls the `dsd.main()` function.
+    If the user chooses to quit, it prints a game over message.
+    """
     print("""
          .d8888b.         d8888 888b     d888 8888888888 
         d88P  Y88b       d88888 8888b   d8888 888        
@@ -128,6 +144,11 @@ def game_over():
             break
 
 def win_game():
+    """
+    Prints a winning message and asks the user if they want to play again.
+    If the user inputs 'Yes', the main() function is called to start a new game.
+    """
+
     print("""
 ██╗    ██╗██╗███╗   ██╗
 ██║    ██║██║████╗  ██║
@@ -293,9 +314,11 @@ def attack_threat(active_threats, first_attack):
 
     Args:
         active_threats (list): List of active threats.
+        first_attack (boolean): True if another tactical have been used in the turn
     
     Returns:
         list of active threats with the corresponding modifications
+        first_attack (boolean): True if another tactical have been used in the turn
     """
     active_threats_copy = active_threats.copy()
 
@@ -365,6 +388,16 @@ def are_scanners(crew):
     return False
 
 def stun_threat(active_threats):
+    """
+    Stuns a threat from the list of active threats.
+
+    Args:
+        active_threats (list): A list of active threats.
+
+    Returns:
+        list: The updated list of active threats with the selected threat stunned.
+    """
+
     threat_stunned = False
     active_threats_list = ""
 
@@ -404,14 +437,17 @@ def show_options(index_crewmember, crewmember, crew, active_threats, health, shi
     Displays options for a crewmember based on their crew type.
     
     Args:
+        index_crewmember (int): 
         crewmember (dict): The crewmember for whom options are displayed.
         crew (list): List of all crewmembers.
         active_threats (list): List of active threats.
         health (int): The current health value.
         shield (int): The current shield value.
+        first_attack (boolean): True if another tactical have been used in the turn
+        hull_repaired_in_turn (boolean): True if the hull has been repaired previously in the turn
         
     Returns:
-        tuple: A tuple containing the updated crew, active threats, health and shield values.
+        tuple: A tuple containing the updated crew_copy, active_threats_copy, health, shield, first_attack, hull_repaired_in_turn
     """
     crew_copy = crew.copy()
     active_threats_copy = active_threats.copy()
@@ -719,7 +755,7 @@ def crew_status(crew):
         crew (list): List of crewmates.
         
     Returns:
-        tuple: A tuple containing the list of active crewmates and the status message.
+        message (String): The status message
     """
 
     crew_names = ['COMMANDER', 'TACTICAL', 'MEDICAL', 'SCIENTIFIC', 'ENGINEER', 'SCANNER', 'EMPTY']
@@ -749,7 +785,18 @@ def crew_status(crew):
     return message
 
 def print_assign(health, shield, active_threats, crew_copy, message_to_continue, dice_number=' ', message_2 = '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'):
+    """
+    Prints the crew assignment interface and prompts the user to interact with the crew members.
 
+    Parameters:
+    health (int): The health value.
+    shield (int): The shield value.
+    active_threats (list): A list of active threats.
+    crew_copy (list): A copy of the crew members.
+    message_to_continue (str): A message to display to continue the game.
+    dice_number (str, optional): The dice number. Defaults to ' '.
+    message_2 (str, optional): Additional message to display. Defaults to '\nPress [1,2,3...] respectively to interact with the crew member.\n\n'.
+    """
     clear_terminal()
     print_interface("Assigning crew", health, shield, active_threats, crew_copy, message_to_continue)
     message = crew_status(crew_copy)
@@ -767,6 +814,9 @@ def assign_crew(crew, active_threats, health, shield):
         active_threats (list): List of active threats.
         health (int): Current health value.
         shield (int): Current shield value.
+
+    Returns:
+        tuple: A tuple containing crew_copy, active_threats_copy, health, shield
     """
     crew_copy = crew.copy()
 
